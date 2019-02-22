@@ -1,0 +1,13 @@
+<%= form_for @registration do |f| %>
+  <%= f.hidden_field :event_id, value: params[:event_id] %>
+  <%= f.hidden_field :user_id, value: params[:user_id] %>
+
+  <%= f.label :channel %>
+  <%= f.select :channel_id, @registration.event.channels.collect { |c| ["#{c.band.name} #{c.name} - #{c.frequency}", c.id]}, {}, {class: "form-control"} %>
+  <br>
+  <%= f.label :notes %>
+  <%= f.text_area :notes, class: "form-control" %>
+  <br>
+  <%= f.submit "Register", class: "btn btn-primary" %>
+  <%= link_to "Cancel", event_path(@registration.event), class: "btn btn-outline-primary" %>
+<% end %>

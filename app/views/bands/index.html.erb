@@ -1,0 +1,18 @@
+<h2>Bands Admin <%= link_to "New Band", new_band_path, class: "btn btn-primary pull-right" %></h2>
+
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @bands.each do |band| %>
+    <tr>
+      <td><%= band.name %></td>
+      <td><%= link_to "Edit", edit_band_path(band) %> | <%= link_to "Delete", band_path(band), method: :delete %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

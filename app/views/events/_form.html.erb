@@ -1,0 +1,68 @@
+<%= form_for @event do |f| %>
+  <%= f.label :name %>
+  <%= f.text_field :name, class: "form-control" %>
+  <br>
+  <%= f.label :description %>
+  <%= f.text_area :description, class: "form-control" %>
+  <br>
+  <%= f.label :location %>
+  <%= f.text_area :location, class: "form-control" %>
+  <br>
+  <%= f.label :start %>
+  <div class="input-group date" data-target-input="nearest" id="start_picker">
+    <%= f.text_field :start, class: "form-control datetimepicker-input", placeholder: "DD/MM/YYYY HH:MM" %>
+    <div class="input-group-append" data-target="#start_picker" data-toggle="datetimepicker">
+      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+    </div>
+  </div>
+  <br>
+  <%= f.label :end %>
+  <div class="input-group date" data-target-input="nearest" id="end_picker">
+    <%= f.text_field :end, class: "form-control datetimepicker-input", placeholder: "DD/MM/YYYY HH:MM" %>
+    <div class="input-group-append" data-target="#end_picker" data-toggle="datetimepicker">
+      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+    </div>
+  </div>
+  <br>
+  <%= f.label :registration_start %>
+  <div class="input-group date" data-target-input="nearest" id="registration_start_picker">
+    <%= f.text_field :registration_start, class: "form-control datetimepicker-input", placeholder: "DD/MM/YYYY HH:MM" %>
+    <div class="input-group-append" data-target="#registration_start_picker" data-toggle="datetimepicker">
+      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+    </div>
+  </div>
+  <br>
+  <%= f.label :registration_end %>
+  <div class="input-group date" data-target-input="nearest" id="registration_end_picker">
+    <%= f.text_field :registration_end, class: "form-control datetimepicker-input", placeholder: "DD/MM/YYYY HH:MM" %>
+    <div class="input-group-append" data-target="#registration_end_picker" data-toggle="datetimepicker">
+      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+    </div>
+  </div>
+  <br>
+  <%= f.label :channels %>
+  <%= f.select :channel_ids, Channel.all.collect { |c| ["#{c.band.name} #{c.name} - #{c.frequency}", c.id]}, {multiple: true}, {class: "form-control"} %>
+  <br>
+  <%= f.label :image %>
+  <div class="custom-file mb-2">
+    <%= f.file_field :image, class: "" %>
+    <label class="custom-file-label" for="event_image">Choose file</label>
+  </div>
+  <% if @event.image.attached? %>
+    <%= image_tag url_for(@event.image), width: 400, class: "img-thumbnail" %><br>
+    <%= link_to "Remove image", event_delete_image_path(@event), method: :delete %>
+  <% end %>
+  <br><br>
+  <%= f.submit class: "btn btn-primary" %>
+  <%= link_to "Cancel", events_path, class: "btn btn-outline-primary" %>
+<% end %>
+
+<script>
+  $(document).ready(function () {
+    bsCustomFileInput.init();
+    $('#start_picker').datetimepicker({keepInvalid: true, format: 'DD/MM/YYYY HH:mm:ss'});
+    $('#end_picker').datetimepicker({keepInvalid: true, format: 'DD/MM/YYYY HH:mm:ss'});
+    $('#registration_start_picker').datetimepicker({keepInvalid: true, format: 'DD/MM/YYYY HH:mm:ss'});
+    $('#registration_end_picker').datetimepicker({keepInvalid: true, format: 'DD/MM/YYYY HH:mm:ss'});
+  })
+</script>

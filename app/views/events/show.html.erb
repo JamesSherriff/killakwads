@@ -1,0 +1,24 @@
+<h1><%= @event.name %></h1>
+<p><%= @event.description %></p>
+<% if @event.location && @event.location != "" %>
+   <p><strong>Location:</strong> <%= @event.location %></p>
+<% end %>
+<p><strong>Start: </strong><%= @event.start.strftime("%d/%m/%Y - %H:%M") %></p>
+<p><strong>End: </strong><%= @event.end.strftime("%d/%m/%Y - %H:%M") %></p>
+
+<p><strong>Registration Start: </strong><%= @event.registration_start.strftime("%d/%m/%Y - %H:%M") %></p>
+<p><strong>Registration End: </strong><%= @event.registration_end.strftime("%d/%m/%Y - %H:%M") %></p>
+
+<% if @event.registration_open? && !current_user.registered_for?(@event) %>
+  <center><%= link_to "Register", new_registration_path({event_id: @event.id, user_id: current_user.id}), class: "btn btn-lg btn-primary" %></center>
+<% end %>
+
+<br>
+<% if @event.image.attached? %>
+  <%= image_tag url_for(@event.image), class: "img-fluid mb-3" %>
+<% end %>
+
+<%= link_to "Back to all events", events_path, class: "btn btn-primary" %>
+<% if current_user.admin? %>
+  <%= link_to "Edit", edit_event_path(@event), class: "btn btn-warning" %>
+<% end %>

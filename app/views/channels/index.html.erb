@@ -1,0 +1,20 @@
+<h2>Channels Admin <%= link_to "New Channel", new_channel_path, class: "btn btn-primary pull-right" %></h2>
+
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Frequency</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @channels.each do |channel| %>
+    <tr>
+      <td><%= channel.name %></td>
+      <td><%= channel.frequency %></td>
+      <td><%= link_to "Edit", edit_channel_path(channel) %> | <%= link_to "Delete", channel_path(channel), method: :delete %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
