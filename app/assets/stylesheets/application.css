@@ -35,6 +35,14 @@ div.card a p, div.card a h4 {
   text-decoration: none;
 }
 
+div.card a:hover {
+  text-decoration: none;
+}
+
+div.card a p:hover, div.card a h3:hover {
+  text-decoration: none;
+}
+
 a.navbar-brand {
   font-size: 1.4em;
 }
