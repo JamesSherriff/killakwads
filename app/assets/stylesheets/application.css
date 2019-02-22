@@ -14,6 +14,22 @@
  *= require_self
  */
 
+.alert-error {
+  background-color: #f8d7da;
+}
+
+.alert-alert {
+  background-color: #cce5ff;
+  color: #004085;
+  border-color: #b8daff;
+}
+
+.alert-notice {
+  background-color: #cce5ff;
+  color: #004085;
+  border-color: #b8daff;
+}
+
 div.card a p, div.card a h4 {
   color: black;
   text-decoration: none;
