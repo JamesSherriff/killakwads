@@ -41,7 +41,7 @@
   </div>
   <br>
   <%= f.label :channels %>
-  <%= f.select :channel_ids, Channel.all.collect { |c| ["#{c.band.name} #{c.name} - #{c.frequency}", c.id]}, {multiple: true}, {class: "form-control"} %>
+  <%= f.select :channel_ids, Channel.all.collect { |c| ["#{c.band.name} #{c.name} - #{c.frequency}", c.id]}, {}, {multiple: true, class: "form-control"} %>
   <br>
   <%= f.label :image %>
   <div class="custom-file mb-2">
