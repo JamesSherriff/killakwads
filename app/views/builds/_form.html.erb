@@ -1,0 +1,24 @@
+<%= form_for @build do |f| %>
+  <%= form_errors_for @builds %>
+
+  <%= f.hidden_field :user_id %>
+
+  <%= f.label :name %>
+  <%= f.text_field :name, class: "form-control" %>
+  <br>
+  <%= f.label "Rotor Builds link" %>
+  <%= f.text_field :rotorbuilds_url, class: "form-control", placeholder: "Link to the rotorbuilds page for this build." %>
+  <br>
+  <%= f.label :image %>
+  <div class="custom-file mb-2">
+    <%= f.file_field :image, class: "" %>
+    <label class="custom-file-label" for="build_image">Choose image</label>
+  </div>
+  <% if @build.image.attached? %>
+    <%= image_tag url_for(@build.image), width: 400, class: "img-thumbnail" %><br>
+    <%= link_to "Remove image", build_delete_image_path(@build), method: :delete %>
+  <% end %>
+  <br><br>
+  <%= f.submit "Save", class: "btn btn-primary" %>
+  <%= link_to "Cancel", user_path(current_user), class: "btn btn-primary-outline" %>
+<% end %>

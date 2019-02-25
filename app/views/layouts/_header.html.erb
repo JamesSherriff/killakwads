@@ -27,7 +27,9 @@
               <strong><%= current_user.name || current_user.email %></strong>
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-              <a href="#" class="dropdown-item"><strong>Profile</strong></a>
+              <%= link_to user_path(current_user), class: "dropdown-item" do %>
+                <strong>Profile</strong>
+              <% end %>
               <% if current_user.admin? %>
                 <%= link_to channels_path, class: "dropdown-item" do %>
                   <strong>Channels</strong>
@@ -36,10 +38,10 @@
                   <strong>Bands</strong>
                 <% end %>
               <% end %>
-              <a href="#" class="dropdown-item">
-                <div class="dropdown-divider"></div>
+              <div class="dropdown-divider"></div>
+              <%= link_to destroy_user_session_path, method: :delete, class: "dropdown-item" do %>
                 <strong>Logout</strong>
-              </a>
+              <% end %>
             </div>
           </li>
         </ul>

@@ -1,17 +1,68 @@
-<br>
-<div class="pull-left" style="font-size:60px;color:#414952;">
-	<%=@user.display_name %>
+<center>
+  <% if @user.profile_picture.attached? %>
+    <%= image_tag url_for(@user.profile_picture), height: 150, width: 150, style: "border-radius: 50%" %>
+  <% end %>
+  <h1><%= @user.display_name || @user.name %></h1>
+  <hr>
+</center>
+
+<% if @user.description && @user.description != "" %>
+  <h3>Bio</h3>
+  <hr>
+  <p><%= @user.description %></p>
+<% end %>
+
+<h3>Builds <%= link_to new_build_path, class: "btn btn-primary pull-right" do %>New <span class="fa fa-plus"></span><% end %></h3>
+<hr>
+<% if @user.builds.length > 0 %>
+<div class="row">
+  <% @user.builds.each do |build| %>
+    <div class="col-sm-6 mb-4">
+      <a href="<%= build.rotorbuilds_url %>">
+        <div class="card">
+          <% if build.image.attached? %>
+            <img src="<%= url_for(build.image) %>" class="card-img-top" alt="<%= build.name %>">
+          <% end %>
+          <div class="card-body">
+            <h3 class="card-title"><%= build.name %></h3>
+            <br>
+          </div>
+        </div>
+      </a>
+    </div>
+  <% end %>
 </div>
-<%if @user.profile_picture.attached? %>
-<div class="pull-right" style="font-size:21px;color:#414952;">
-	<%=@user.profile_picture %>
-</div>
-<%end %>
+<% else %>
+  <h4 class="mb-5">You don't have any builds yet! Why not add one?</h4>
+<% end %>
 
+<% if @user.registrations.length > 0 %>
+  <h3>Previous Events</h3>
+  <hr>
+  <div class="row">
+    <% @user.registrations.each do |registration| %>
+      <div class="col-sm-6 mb-4">
+        <a href="<%= event_path(registration.event) %>">
+          <div class="card">
+            <% if registration.event.image.attached? %>
+              <img src="<%= url_for(registration.event.image) %>" class="card-img-top" alt="<%= registration.event.name %>">
+            <% end %>
+            <div class="card-body">
+              <h3 class="card-title"><%= registration.event.name %></h3>
+              <p class="card-text" style="color: black;"><%= registration.event.description %></p>
+              <% if registration.event.location && registration.event.location != "" %>
+                <p style="color: black;"><strong>Location: </strong><%= registration.event.location %></p>
+              <% end %>
+              <br>
+            </div>
+          </div>
+        </a>
+      </div>
+    <% end %>
+  </div>
+<% end %>
 
-
-<br><br><br><br><br><br><br><br>
 <%= link_to "Back to all users", users_path, class: "btn btn-primary" %>
-<% if current_user.admin? %>
+<% if current_user.admin? || @user == current_user %>
   <%= link_to "Edit", edit_user_path(@user), class: "btn btn-warning" %>
 <% end %>

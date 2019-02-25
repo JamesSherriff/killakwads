@@ -1,4 +1,6 @@
 <%= form_for @band do |f| %>
+  <%= form_errors_for @band %>
+
   <%= f.label :name %>
   <%= f.text_field :name, class: "form-control" %>
   <br>

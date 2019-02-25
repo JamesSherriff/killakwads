@@ -14,6 +14,10 @@ Rails.application.routes.draw do
   resources :channels
   resources :bands
   resources :registrations
-  resources :users
+  resources :users do
+    delete '/:id/profile_picture', to: 'users#delete_profile_picture', as: 'delete_profile_picture'
+  end
   resources :api
+  
+  resources :builds, except: [:index, :show]
 end

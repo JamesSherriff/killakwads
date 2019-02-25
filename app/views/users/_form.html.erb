@@ -1,4 +1,6 @@
 <%= form_for @user do |f| %>
+  <%= form_errors_for @user %>  
+
   <%= f.label :name %>
   <%= f.text_field :name, class: "form-control" %>
   <br>  
@@ -8,26 +10,24 @@
   <%= f.label :email %>
   <%= f.text_field :email, class: "form-control" %>
   <br>
-  <%= f.label :password %>
-  <%= f.text_field :password, class: "form-control" %>
+  <%= f.label :bio %>
+  <%= f.text_area :description, class: "form-control", placeholder: "Tell people about yourself." %>
   <br>
-  <%= f.label :description %>
-  <%= f.text_area :description, class: "form-control" %>
-  <br>
-  <%= f.label :location %>
-  <%= f.text_area :location, class: "form-control" %>
-  <br>
-   <%= f.label :image %>
+  <%= f.label :profile_picture %>
   <div class="custom-file mb-2">
-    <%= f.file_field :image, class: "" %>
-    <label class="custom-file-label" for="event_image">Choose image</label>
+    <%= f.file_field :profile_picture, class: "" %>
+    <label class="custom-file-label" for="user_profile_picture">Choose image</label>
   </div>
   <% if @user.profile_picture.attached? %>
     <%= image_tag url_for(@user.profile_picture), width: 400, class: "img-thumbnail" %><br>
-    <%= link_to "Remove image", user_delete_image_path(@user), method: :delete %>
+    <%= link_to "Remove profile picture", user_delete_profile_picture_path(@user), method: :delete %>
   <% end %>
   <br>
   <br><br>
-  <%= f.submit class: "btn btn-primary" %>
-  <%= link_to "Cancel", events_path, class: "btn btn-outline-primary" %>
+  <%= f.submit "Save", class: "btn btn-primary" %>
+  <%= link_to "Cancel", root_path, class: "btn btn-outline-primary" %>
 <% end %>
+
+<script>
+
+</script>

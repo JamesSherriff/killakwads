@@ -1,4 +1,5 @@
 class RegistrationsController < ApplicationController
+  before_action :authenticate_user!
   
   def new
     @registration = Registration.new
@@ -51,9 +52,30 @@ class RegistrationsController < ApplicationController
   end
   
   def update
+    @registration = Registration.find(params[:id])
+    if @registration.user != current_user && !current_user.admin?
+      redirect_to root_path, notice: "That's not your registration!" and return
+    end
+    
+    if @registration.update(registration_params)
+      redirect_to root_path, notice: "Registration updated."
+    else
+      render :edit
+    end
   end
   
   def destroy
+    @registration = Registration.find(params[:id])
+    event_name = @registration.event.name
+    if @registration.user != current_user && !current_user.admin?
+      redirect_to root_path, notice: "That's not your registration!" and return
+    end
+    
+    if @registration.destroy
+      redirect_to root_path, notice: "Cancelled your registration for #{event_name}"
+    else
+      redirect_to root_path, notice: "Unable to cancel your registration."
+    end
   end
   
   private

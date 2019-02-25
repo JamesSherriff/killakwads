@@ -7,8 +7,14 @@
       <%= form_for(resource, as: resource_name, url: user_registration_path) do |f| %>
         <%= render "devise/shared/error_messages", resource: resource %>
 
+        <%= f.label :name %><br>
+        <%= f.text_field :name, autofocus: true, class: "form-control w-50" %>
+    
+        <%= f.label :display_name %><br>
+        <%= f.text_field :display_name, class: "form-control w-50" %>
+      
         <%= f.label :email %><br />
-        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control w-50" %>
+        <%= f.email_field :email, autocomplete: "email", class: "form-control w-50" %>
         <br>
         <%= f.label :password %>
         <% if @minimum_password_length %>

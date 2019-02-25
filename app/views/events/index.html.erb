@@ -1,10 +1,10 @@
 <div id="events" class="mb-5">
   <% if @events.empty? %>
-    <center><h2>There aren't any events currently running!</h2></center>
+    <center><h2>Couldn't find any events!</h2></center>
   <% else %>
     <div class="row">
       <% @events.each do |event| %>
-      <div class="col-sm-6">
+      <div class="col-sm-6 mb-4">
         <a href="<%= event_path(event) %>">
           <div class="card">
             <% if event.image.attached? %>

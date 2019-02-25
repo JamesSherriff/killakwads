@@ -1,4 +1,6 @@
 <%= form_for @event do |f| %>
+  <%= form_errors_for @event %>
+
   <%= f.label :name %>
   <%= f.text_field :name, class: "form-control" %>
   <br>
@@ -59,12 +61,13 @@
     <label class="custom-file-label" for="event_pilot_brief">Choose file</label>
   </div>
   <br>
-  <%= f.label :stream_url %>
-  <%= f.text_field :stream_url, class: "form-control", placeholder: "Leave blank if not streaming event." %>
-  <br>
   <% if @event.pilot_brief.attached? %>
     <p><strong>Current file: </strong><%= @event.pilot_brief.blob.filename %></p>
   <% end %>
+  <br>
+  <%= f.label :stream_url %>
+  <%= f.text_field :stream_url, class: "form-control", placeholder: "Leave blank if not streaming event." %>
+  <br>
   <br><br>
   <%= f.submit class: "btn btn-primary" %>
   <%= link_to "Cancel", events_path, class: "btn btn-outline-primary" %>
@@ -72,7 +75,6 @@
 
 <script>
   $(document).ready(function () {
-    bsCustomFileInput.init();
     $('#start_picker').datetimepicker({keepInvalid: true, format: 'DD/MM/YYYY HH:mm:ss'});
     $('#finish_picker').datetimepicker({keepInvalid: true, format: 'DD/MM/YYYY HH:mm:ss'});
     $('#registration_start_picker').datetimepicker({keepInvalid: true, format: 'DD/MM/YYYY HH:mm:ss'});

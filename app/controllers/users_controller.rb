@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  before_action :authenticate_user!
+  
   def index
     @users = User.all
   end
@@ -14,8 +16,11 @@ class UsersController < ApplicationController
   
   def create
     @user = User.new
+    if !current_user.admin?
+      redirect_to root_path, notice: "You need to be an admin to do that." and return
+    end
     if @user.update(User_params)
-      redirect_to User_path(@user), notice: "Successfully created User."
+      redirect_to user_path(@user), notice: "Successfully created User."
     else
       render :new
     end
@@ -23,12 +28,18 @@ class UsersController < ApplicationController
   
   def edit
     @user = User.find(params[:id])
+    if !(current_user.admin? || @user == current_user)
+      redirect_to root_path, notice: "You need to be an admin to do that." and return
+    end
   end
   
   def update
     @user = User.find(params[:id])
-    if @user.update(User_params)
-      redirect_to User_path(@user), notice: "Succesfully updated User."
+    if !(current_user.admin? || @user == current_user)
+      redirect_to root_path, notice: "You need to be an admin to do that." and return
+    end
+    if @user.update(user_params)
+      redirect_to user_path(@user), notice: "Succesfully updated User."
     else
       render :edit
     end
@@ -36,21 +47,27 @@ class UsersController < ApplicationController
   
   def destroy
     @user = User.find(params[:id])
+    if !(current_user.admin? || @user == current_user)
+      redirect_to root_path, notice: "You need to be an admin to do that." and return
+    end
     if @user.destroy then
-      redirect_to Users_path, notice: "User deleted."
+      redirect_to users_path, notice: "User deleted."
     else
-      redirect_to Users_path, notice: "Unable to delete User."
+      redirect_to users_path, notice: "Unable to delete User."
     end
   end
   
-  def delete_image
+  def delete_profile_picture
     @user = User.find(params[:id])
-    @user.image.purge
+    if !(current_user.admin? || @user == current_user)
+      redirect_to root_path, notice: "You need to be an admin to do that." and return
+    end
+    @user.profile_picture.purge
     render :edit
   end
   
   private
-  def User_params
-    params.require(:user).permit(:name, :description, :email, :password, :display_name, :image)
+  def user_params
+    params.require(:user).permit(:name, :display_name, :description, :email, :password, :profile_picture)
   end
 end

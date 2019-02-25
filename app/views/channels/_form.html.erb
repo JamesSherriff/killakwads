@@ -1,4 +1,6 @@
 <%= form_for @channel do |f| %>
+  <%= form_errors_for @channel %>
+
   <%= f.label :band %>
   <%= f.select :band_id, Band.all.collect { |b| [b.name, b.id]}, {}, {class: "form-control"} %>
   <br>
