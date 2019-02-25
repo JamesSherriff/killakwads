@@ -49,9 +49,12 @@ class EventsController < ApplicationController
     @event.image.purge
     render :edit
   end
+    
+  def check_channel
+  end
   
   private
   def event_params
-    params.require(:event).permit(:name, :description, :location, :start, :end, :registration_start, :registration_end, :image, channel_ids: [])
+    params.require(:event).permit(:name, :description, :location, :start, :end, :registration_start, :registration_end, :image, :pilot_brief, channel_ids: [])
   end
 end

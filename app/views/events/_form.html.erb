@@ -46,11 +46,20 @@
   <%= f.label :image %>
   <div class="custom-file mb-2">
     <%= f.file_field :image, class: "" %>
-    <label class="custom-file-label" for="event_image">Choose file</label>
+    <label class="custom-file-label" for="event_image">Choose image</label>
   </div>
   <% if @event.image.attached? %>
     <%= image_tag url_for(@event.image), width: 400, class: "img-thumbnail" %><br>
     <%= link_to "Remove image", event_delete_image_path(@event), method: :delete %>
+  <% end %>
+  <br>
+  <%= f.label :pilot_brief %>
+  <div class="custom-file mb-2">
+    <%= f.file_field :pilot_brief, class: "" %>
+    <label class="custom-file-label" for="event_pilot_brief">Choose file</label>
+  </div>
+  <% if @event.pilot_brief.attached? %>
+    <p><strong>Current file: </strong><%= @event.pilot_brief.blob.filename %></p>
   <% end %>
   <br><br>
   <%= f.submit class: "btn btn-primary" %>

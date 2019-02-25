@@ -3,6 +3,7 @@ class Event < ApplicationRecord
   has_many :registrations
   
   has_one_attached :image
+  has_one_attached :pilot_brief
   
   scope :registration_open, -> {where("registration_start < ? AND registration_end > ?", Time.now, Time.now)}
   
