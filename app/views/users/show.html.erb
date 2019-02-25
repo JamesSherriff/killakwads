@@ -1,0 +1,18 @@
+
+<br>
+<div class="pull-left" style="font-size:60px;color:#414952;">
+	<%=@user.display_name %>
+</div>
+<%if @user.image.attached? %>
+<div class="pull-right" style="font-size:21px;color:#414952;">
+	<%=@user.image %>
+</div>
+<%end %>
+
+
+
+<br><br><br><br><br><br><br><br>
+<%= link_to "Back to all users", users_path, class: "btn btn-primary" %>
+<% if current_user.admin? %>
+  <%= link_to "Edit", edit_user_path(@user), class: "btn btn-warning" %>
+<% end %>

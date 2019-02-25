@@ -6,7 +6,9 @@ class User < ApplicationRecord
   
   has_many :registrations
   has_many :channels, through: :registrations
-  
+  has_one_attached :image
+    has_one_attached :pilot_brief
+
   def admin?
     role == "admin"
   end

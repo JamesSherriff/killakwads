@@ -5,8 +5,8 @@
 #   gem 'sqlite3'
 #
 default: &default
-  adapter: postgresql
-  username: killakwads
+  adapter: mysql2
+  username: root
   password: password
 
 development:
