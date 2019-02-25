@@ -11,7 +11,7 @@ class Event < ApplicationRecord
     (registration_start < Time.now && registration_end > Time.now)
   end
   
-  def finished
-    finish < Time.now
+  def finished?
+    (finish < Time.now)
   end
 end

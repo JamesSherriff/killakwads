@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   
   root 'events#index'
   
+  get '/events/:id/registrations', to: 'events#registrations', as: 'event_registrations'
   get '/events/previous', to: 'events#previous', as: 'previous_events'
   resources :events do
     get '/:event_id/:channel_id', to: 'events#check_channel', as: 'check_channel'

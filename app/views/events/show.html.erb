@@ -1,4 +1,6 @@
 <% if @event.finished? %>
+  <div class="alert alert-warning">This event has finished.</div>
+<% end %>
 <div class="row">
   <div class="col-sm-<% if @event.registration_open? %>8<% else %>12<% end %>" style="padding-left: 0px; <% if !@event.registration_open? %>padding-right: 0px;<% end %>">
     <h1 style="border-bottom: 10px solid #343a40; padding-bottom: 20px; margin-bottom: 20px;"><%= @event.name %> <% if @event.registration_open? && !current_user.registered_for?(@event) %><%= link_to "Register", new_registration_path({event_id: @event.id, user_id: current_user.id}), class: "btn btn-lg btn-primary pull-right" %><% end %></h1>
@@ -18,7 +20,7 @@
       
       <div class="card-body">
         <% if @event.location && @event.location != "" %>
-          <p><strong>Location:</strong> <%= @event.location %></p>
+          <p><strong>Location:</strong> <%= link_to @event.location, "https://www.google.com/maps/search/#{@event.location}", target: "_blank" %></p>
         <% end %>
         <p><strong>Start: </strong><%= @event.start.strftime("%d/%m/%Y - %H:%M") %></p>
         <p><strong>End: </strong><%= @event.finish.strftime("%d/%m/%Y - %H:%M") %></p>
@@ -28,7 +30,7 @@
     </div>
     <div class="card">
       <div class="card-header">
-        <h3>Pilots Registered</h3>
+        <h3>Pilots Registered <% if current_user.admin? %><%= link_to event_registrations_path(@event, format: :csv), class: "btn btn-primary btn-md" do %><span class="fa fa-download"></span><% end %><% end %></h3>
       </div>
       <div class="card-body">
         <% @event.registrations.each do |registration| %>

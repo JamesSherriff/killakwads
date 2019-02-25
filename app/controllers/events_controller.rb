@@ -1,12 +1,14 @@
 class EventsController < ApplicationController
+  require 'csv'
+  
   before_action :authenticate_user!
   
   def index
-    @events = Event.where("finish < ?", Time.now)
+    @events = Event.where("finish > ?", Time.now)
   end
   
   def previous
-    @events = Event.where("finish > ?", Time.now)
+    @events = Event.where("finish < ?", Time.now)
     render :index
   end
   
@@ -62,6 +64,24 @@ class EventsController < ApplicationController
       registrations << {name: registration.user.name, id: registration.user.id}
     end
     render json: registrations
+  end
+    
+  def registrations
+    @event = Event.find(params[:id])
+    registrations = @event.registrations
+    
+
+    registrations_csv = CSV.generate(headers: true) do |csv|
+      csv << ["email", "name", "channel"]
+
+      registrations.each do |registration|
+        csv << [registration.user.email, registration.user.name, "#{registration.channel.band.name} #{registration.channel.name} - #{registration.channel.frequency}"]
+      end
+    end
+    
+    respond_to do |format|
+      format.csv { send_data registrations_csv, filename: "#{@event.name} - registrations.csv"}
+    end
   end
   
   private
