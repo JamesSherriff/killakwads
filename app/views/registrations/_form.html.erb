@@ -1,4 +1,5 @@
 <%= form_for @registration do |f| %>
+  <br>
   <%= f.hidden_field :event_id, value: params[:event_id] %>
   <%= f.hidden_field :user_id, value: params[:user_id] %>
 
@@ -6,7 +7,6 @@
   <%= f.select :channel_id, @registration.event.channels.collect { |c| ["#{c.band.name} #{c.name} - #{c.frequency}", c.id]}, {}, {class: "form-control"} %>
   <br>
   <p id="channel_status"></p>
-  <br>
   <%= f.label :notes %>
   <%= f.text_area :notes, class: "form-control" %>
   <br>
@@ -15,11 +15,11 @@
 <% end %>
 
 <script>
-  $('#channel_id').on('change', function() {
-    $.get("<%= event_check_channel_path(event_id: 'event_id', channel_id: 'channel_id') %>", function(data) {
-      if(data.pilots.length > 0) {
+  $('#registration_channel_id').on('change', function() {
+    $.get("<%= event_check_channel_path(event_id: @registration.event.id, channel_id: 'channel_id') %>".replace('channel_id', $(this).val()), function(data) {
+      if(data.length > 0) {
         clashes_string = ""
-        $.each(data.pilots, function(pilot) {
+        $.each(data, function(key, pilot) {
           if(clashes_string == "") {
             clashes_string = "You will be sharing with: " + pilot.name;
           }
@@ -27,8 +27,11 @@
             clashes_string += ", " + pilot.name;
           }
         });
-        $('#channel_status').text(clashes_string);
       }
+      else {
+        clashes_string = "You're not currently sharing with anybody."
+      } 
+      $('#channel_status').text(clashes_string);
     });
   });
 </script>

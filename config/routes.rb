@@ -4,8 +4,9 @@ Rails.application.routes.draw do
   
   root 'events#index'
   
+  get '/events/previous', to: 'events#previous', as: 'previous_events'
   resources :events do
-    get '/:id/:channel_id', to: 'events#check_channel', as: 'check_channel'
+    get '/:event_id/:channel_id', to: 'events#check_channel', as: 'check_channel'
     delete '/:id/image', to: 'events#delete_image', as: 'delete_image'
   end
   

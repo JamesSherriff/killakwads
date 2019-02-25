@@ -2,7 +2,12 @@ class EventsController < ApplicationController
   before_action :authenticate_user!
   
   def index
-    @events = Event.all
+    @events = Event.where("finish < ?", Time.now)
+  end
+  
+  def previous
+    @events = Event.where("finish > ?", Time.now)
+    render :index
   end
   
   def show
@@ -51,10 +56,16 @@ class EventsController < ApplicationController
   end
     
   def check_channel
+    @event = Event.find(params[:event_id])
+    registrations = []
+    @event.registrations.where(channel: params[:channel_id]).each do |registration|
+      registrations << {name: registration.user.name, id: registration.user.id}
+    end
+    render json: registrations
   end
   
   private
   def event_params
-    params.require(:event).permit(:name, :description, :location, :start, :end, :registration_start, :registration_end, :image, :pilot_brief, channel_ids: [])
+    params.require(:event).permit(:name, :description, :location, :start, :finish, :registration_start, :registration_end, :image, :pilot_brief, channel_ids: [])
   end
 end

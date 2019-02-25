@@ -1,24 +1,50 @@
-<h1 style="border-bottom: 10px solid #343a40; padding-bottom: 20px; margin-bottom: 20px;"><%= @event.name %></h1>
-<p><%= @event.description %></p>
-<% if @event.location && @event.location != "" %>
-   <p><strong>Location:</strong> <%= @event.location %></p>
-<% end %>
-<p><strong>Start: </strong><%= @event.start.strftime("%d/%m/%Y - %H:%M") %></p>
-<p><strong>End: </strong><%= @event.end.strftime("%d/%m/%Y - %H:%M") %></p>
-
-<p><strong>Registration Start: </strong><%= @event.registration_start.strftime("%d/%m/%Y - %H:%M") %></p>
-<p><strong>Registration End: </strong><%= @event.registration_end.strftime("%d/%m/%Y - %H:%M") %></p>
-
-<% if @event.registration_open? && !current_user.registered_for?(@event) %>
-  <center><%= link_to "Register", new_registration_path({event_id: @event.id, user_id: current_user.id}), class: "btn btn-lg btn-primary" %></center>
-<% end %>
-
-<br>
-<% if @event.image.attached? %>
-  <%= image_tag url_for(@event.image), class: "img-fluid mb-3" %>
-<% end %>
-
-<%= link_to "Back to all events", events_path, class: "btn btn-primary" %>
-<% if current_user.admin? %>
-  <%= link_to "Edit", edit_event_path(@event), class: "btn btn-warning" %>
-<% end %>
+<% if @event.finished? %>
+<div class="row">
+  <div class="col-sm-<% if @event.registration_open? %>8<% else %>12<% end %>" style="padding-left: 0px; <% if !@event.registration_open? %>padding-right: 0px;<% end %>">
+    <h1 style="border-bottom: 10px solid #343a40; padding-bottom: 20px; margin-bottom: 20px;"><%= @event.name %> <% if @event.registration_open? && !current_user.registered_for?(@event) %><%= link_to "Register", new_registration_path({event_id: @event.id, user_id: current_user.id}), class: "btn btn-lg btn-primary pull-right" %><% end %></h1>
+    <p><%= @event.description %></p>
+    <% if @event.image.attached? %>
+      <div class="w-100 mb-3">
+        <%= image_tag url_for(@event.image), class: "mb-3", style: "width: 100%; overflow: hidden" %>
+      </div>
+    <% end %>
+  </div>
+  <% if @event.registration_open? && @event.registrations.length > 0 %>
+  <div class="col-4" style="padding-right: 0px;">
+    <div class="card mb-4">
+      <div class="card-header">
+        <h3>Details</h3>
+      </div>
+      
+      <div class="card-body">
+        <% if @event.location && @event.location != "" %>
+          <p><strong>Location:</strong> <%= @event.location %></p>
+        <% end %>
+        <p><strong>Start: </strong><%= @event.start.strftime("%d/%m/%Y - %H:%M") %></p>
+        <p><strong>End: </strong><%= @event.finish.strftime("%d/%m/%Y - %H:%M") %></p>
+        <p><strong>Registration Start: </strong><%= @event.registration_start.strftime("%d/%m/%Y - %H:%M") %></p>
+        <p><strong>Registration End: </strong><%= @event.registration_end.strftime("%d/%m/%Y - %H:%M") %></p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <h3>Pilots Registered</h3>
+      </div>
+      <div class="card-body">
+        <% @event.registrations.each do |registration| %>
+          <% if registration.user.profile_picture.attached? %>
+            <%= image_tag url_for(registration.user.profile_picture), class: "img-thumbnail" %>
+          <% elsif registration.user.profile_picture_url %>
+          <% end %>
+          <strong><%= registration.user.name %></strong> on <strong><%= registration.channel.band.name %> <%= registration.channel.name %></strong>
+        <hr>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <% end %>
+  <%= link_to "Back to all events", events_path, class: "btn btn-primary" %>
+  <% if current_user.admin? %>
+    <%= link_to "Edit", edit_event_path(@event), class: "btn btn-warning" %>
+  <% end %>
+</div>

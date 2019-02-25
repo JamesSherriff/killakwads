@@ -10,4 +10,8 @@ class Event < ApplicationRecord
   def registration_open?
     (registration_start < Time.now && registration_end > Time.now)
   end
+  
+  def finished
+    finish < Time.now
+  end
 end
