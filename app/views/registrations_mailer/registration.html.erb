@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body style="margin-left: 0px; margin-right: 0px">
+    Hi <%= @registration.user.name %>!
+    
+    Thanks for your registration for <%= @registration.event.name %>
+    
+    You are on channel <%= @registration.channel.band.name %> <%= @registration.channel.name %> (<%= @registration.channel.frequency %>).
+    
+    <% if @other_pilots.length > 0 %>
+    You will be sharing with the following pilots:
+    
+    <table>
+      <tr>
+        <th>Name</th>
+      </tr>
+      
+      <% @other_pilots.each do |pilot| %>
+        <tr>
+          <td><%= pilot.name %></td>
+        </tr>
+      <% end %>
+    </table>
+    
+    On the day of the event please only fly when you posses the Race Duck for your channel.
+    <% end %>
+    
+    <% if @registration.event.pilot_brief.attached? %>
+    We've attached the pilot's brief for this event. Please be sure to read it through, so that on the day you are ready for the event.
+    <% end %>
+    
+    KillaKwads Events
+  </body>
+</html>

@@ -17,6 +17,10 @@ class User < ApplicationRecord
     (registrations.where(event: event.id).length > 0)
   end
   
+  def registration_for(event)
+    registrations.find_by(event: event.id)
+  end
+  
   def self.from_omniauth(access_token)
     data = access_token.info
     user = User.where(email: data['email']).first
