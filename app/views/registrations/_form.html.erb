@@ -7,9 +7,17 @@
   <%= f.hidden_field :user_id, value: params[:user_id] %>
 
   <%= f.label :channel %>
-  <%= f.select :channel_id, @registration.event.channels.collect { |c| ["#{c.band.name} #{c.name} - #{c.frequency}", c.id]}, {}, {class: "form-control"} %>
+  <% if @registration.event.channel_allocation_method == "pilot" then %>
+    <%= f.select :channel_id, @registration.event.channels.collect { |c| ["#{c.band.name} #{c.name} - #{c.frequency}", c.id]}, {}, {class: "form-control"} %>
+    <br>
+    <p id="channel_status"></p>
+  <% else %>
+    <p class="text-secondary">You will be assigned a channel by the Race Director. Please use the notes to let us know if you can't easily change VTX channel.</p>
+  <% end %>
   <br>
-  <p id="channel_status"></p>
+  <%= f.label :skill_level %>
+  <%= f.select :skill_level, options_for_select([["Beginner", "Beginner"], ["Intermediate", "Intermediate"], ["Pro", "Pro"]]), {}, {class: "form-control"} %>
+  <br>
   <%= f.label :notes %>
   <%= f.text_area :notes, class: "form-control" %>
   <br>

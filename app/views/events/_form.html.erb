@@ -10,6 +10,9 @@
   <%= f.label :location %>
   <%= f.text_area :location, class: "form-control" %>
   <br>
+  <%= f.label :channel_allocation_method %>
+  <%= f.select :channel_allocation_method, options_for_select([["Manual", "manual"], ["Pilot's choice", "pilot"]]), {}, {class: "form-control"} %>
+  <br>
   <%= f.label :start %>
   <div class="input-group date" data-target-input="nearest" id="start_picker">
     <%= f.text_field :start, class: "form-control datetimepicker-input", placeholder: "DD/MM/YYYY HH:MM" %>
@@ -54,7 +57,7 @@
     <%= image_tag url_for(@event.image), width: 400, class: "img-thumbnail" %><br>
     <%= link_to "Remove image", event_delete_image_path(@event), method: :delete %>
   <% end %>
-  <br>
+  <br><br>
   <%= f.label :pilot_brief %>
   <div class="custom-file mb-2">
     <%= f.file_field :pilot_brief, class: "" %>

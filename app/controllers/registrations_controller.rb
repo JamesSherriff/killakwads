@@ -80,6 +80,6 @@ class RegistrationsController < ApplicationController
   
   private
   def registration_params
-    params.require(:registration).permit(:user_id, :event_id, :channel_id, :notes)
+    params.require(:registration).permit(:user_id, :event_id, :channel_id, :skill_level, :notes)
   end
 end
