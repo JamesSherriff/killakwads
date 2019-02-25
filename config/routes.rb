@@ -15,4 +15,5 @@ Rails.application.routes.draw do
   resources :bands
   resources :registrations
   resources :users
+  resources :api
 end
