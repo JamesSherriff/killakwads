@@ -18,9 +18,9 @@
               <% end %>
               <br>
               <% if event.registration_open? %>
-                <%= link_to "Register", new_registration_path({event_id: event.id, user_id: current_user.id}), class: "btn btn-primary" %>
+                <%= link_to "Register", new_registration_path({event_id: event.id, user_id: current_user.id}), class: "mb-2 btn btn-primary" %>
               <% end %>
-              <%= link_to "View More", event_path(event), class: "btn btn-primary" %>
+              <%= link_to "View More", event_path(event), class: "mb-2 btn btn-primary" %>
               <% if current_user.admin? %>
                 <%= link_to "Edit", edit_event_path(event), class: "btn btn-warning" %>
                 <%= link_to "Delete", event_path(event), method: :delete, class: "btn btn-danger" %>

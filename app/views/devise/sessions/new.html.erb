@@ -14,10 +14,10 @@
       <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
 
         <%= f.label :email %><br />
-        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control w-50" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control col-sm-6" %>
         <br>
         <%= f.label :password %><br />
-        <%= f.password_field :password, autocomplete: "current-password", class: "form-control w-50" %>
+        <%= f.password_field :password, autocomplete: "current-password", class: "form-control col-sm-6" %>
         <br>
         <% if devise_mapping.rememberable? %>
             <%= f.check_box :remember_me %>
