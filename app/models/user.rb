@@ -6,15 +6,17 @@ class User < ApplicationRecord
   
   has_many :registrations
   has_many :channels, through: :registrations
-  has_one_attached :image
-    has_one_attached :pilot_brief
-
+  has_one_attached :profile_picture
   def admin?
     role == "admin"
   end
   
   def registered_for?(event)
     (registrations.where(event: event.id).length > 0)
+  end
+  
+  def registration_for(event)
+    registrations.find_by(event: event.id)
   end
   
   def self.from_omniauth(access_token)

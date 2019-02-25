@@ -1,8 +1,15 @@
 class EventsController < ApplicationController
+  require 'csv'
+  
   before_action :authenticate_user!
   
   def index
-    @events = Event.all
+    @events = Event.where("finish > ?", Time.now)
+  end
+  
+  def previous
+    @events = Event.where("finish < ?", Time.now)
+    render :index
   end
   
   def show
@@ -51,10 +58,34 @@ class EventsController < ApplicationController
   end
     
   def check_channel
+    @event = Event.find(params[:event_id])
+    registrations = []
+    @event.registrations.where(channel: params[:channel_id]).each do |registration|
+      registrations << {name: registration.user.name, id: registration.user.id}
+    end
+    render json: registrations
+  end
+    
+  def registrations
+    @event = Event.find(params[:id])
+    registrations = @event.registrations
+    
+
+    registrations_csv = CSV.generate(headers: true) do |csv|
+      csv << ["email", "name", "channel"]
+
+      registrations.each do |registration|
+        csv << [registration.user.email, registration.user.name, "#{registration.channel.band.name} #{registration.channel.name} - #{registration.channel.frequency}"]
+      end
+    end
+    
+    respond_to do |format|
+      format.csv { send_data registrations_csv, filename: "#{@event.name} - registrations.csv"}
+    end
   end
   
   private
   def event_params
-    params.require(:event).permit(:name, :description, :location, :start, :end, :registration_start, :registration_end, :image, :pilot_brief, channel_ids: [])
+    params.require(:event).permit(:name, :description, :location, :start, :finish, :registration_start, :registration_end, :image, :pilot_brief, channel_ids: [])
   end
 end

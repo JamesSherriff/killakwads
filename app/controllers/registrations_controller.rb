@@ -28,7 +28,14 @@ class RegistrationsController < ApplicationController
     if registration_params[:channel_id]
       @registration.channel = Channel.find(registration_params[:channel_id])
     end
+    
     if @registration.update(registration_params)
+      if @registration.event && @registration.channel
+        @registration.event.registrations.where(channel: @registration.channel).each do |clashing_registration|
+          RegistrationsMailer.registration_clash(clashing_registration).deliver_now
+        end
+      end
+      RegistrationsMailer.registration(@registration).deliver_now
       redirect_to event_path(registration_params[:event_id]), notice: "Congratulations! You're registered for this event."
     else
       render :new
@@ -36,6 +43,11 @@ class RegistrationsController < ApplicationController
   end
   
   def edit
+    @registration = Registration.find(params[:id])
+    if @registration.user != current_user && current_user.admin?
+      flash[:error] = "That's not your registration!"
+      redirect_to root_path and return
+    end
   end
   
   def update

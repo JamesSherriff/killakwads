@@ -22,19 +22,11 @@
     <%= f.file_field :image, class: "" %>
     <label class="custom-file-label" for="event_image">Choose image</label>
   </div>
-  <% if @user.image.attached? %>
-    <%= image_tag url_for(@user.image), width: 400, class: "img-thumbnail" %><br>
+  <% if @user.profile_picture.attached? %>
+    <%= image_tag url_for(@user.profile_picture), width: 400, class: "img-thumbnail" %><br>
     <%= link_to "Remove image", user_delete_image_path(@user), method: :delete %>
   <% end %>
   <br>
-  <%= f.label :pilot_brief %>
-  <div class="custom-file mb-2">
-    <%= f.file_field :pilot_brief, class: "" %>
-    <label class="custom-file-label" for="event_pilot_brief">Choose file</label>
-  </div>
-  <% if @user.pilot_brief.attached? %>
-    <p><strong>Current file: </strong><%= @user.pilot_brief.blob.filename %></p>
-  <% end %>
   <br><br>
   <%= f.submit class: "btn btn-primary" %>
   <%= link_to "Cancel", events_path, class: "btn btn-outline-primary" %>

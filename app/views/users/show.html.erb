@@ -3,9 +3,9 @@
 <div class="pull-left" style="font-size:60px;color:#414952;">
 	<%=@user.display_name %>
 </div>
-<%if @user.image.attached? %>
+<%if @user.profile_picture.attached? %>
 <div class="pull-right" style="font-size:21px;color:#414952;">
-	<%=@user.image %>
+	<%=@user.profile_picture %>
 </div>
 <%end %>
 

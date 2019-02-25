@@ -1,2 +1,2 @@
-<h2>Register for event</h2>
+<h2>Register for <% if @registration.event %><%= @registration.event.name %><% else %>event<% end %></h2>
 <%= render "form" %>

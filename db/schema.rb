@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 2019_02_25_143725) do
+=======
+ActiveRecord::Schema.define(version: 2019_02_25_152939) do
+>>>>>>> 7c538e07ac19dc9a4103ed6672940a0c820543bf
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -58,11 +62,12 @@ ActiveRecord::Schema.define(version: 2019_02_25_143725) do
     t.text "description"
     t.text "location"
     t.datetime "start"
-    t.datetime "end"
+    t.datetime "finish"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "registration_start"
     t.datetime "registration_end"
+    t.string "stream_url"
   end
 
   create_table "events_users", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -92,9 +97,13 @@ ActiveRecord::Schema.define(version: 2019_02_25_143725) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+<<<<<<< HEAD
     t.text "description"
     t.text "location"
     t.text "display_name"
+=======
+    t.string "profile_picture_url"
+>>>>>>> 7c538e07ac19dc9a4103ed6672940a0c820543bf
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

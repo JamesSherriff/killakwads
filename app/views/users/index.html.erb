@@ -7,8 +7,8 @@
       <div class="col-sm-6">
         <a href="<%= user_path(user) %>">
           <div class="card">
-            <% if user.image.attached? %>
-              <img src="<%= url_for(user.image) %>" class="card-img-top" alt="<%= user.name %>">
+            <% if user.profile_picture.attached? %>
+              <img src="<%= url_for(user.profile_picture) %>" class="card-img-top" alt="<%= user.name %>">
             <% end %>
             <div class="card-body">
               <h3 class="card-title"><%= user.name %></h3>
