@@ -42,7 +42,7 @@
       </div>
       <div class="card-body">
         <% @event.registrations.each do |registration| %>
-          <% if registration.user.profile_picture.attached? %>
+          <% if registration.user && registration.user.profile_picture.attached? %>
             <center class="mb-1">
               <%= image_tag url_for(registration.user.profile_picture), class: "img-thumbnail" %>
             </center>
