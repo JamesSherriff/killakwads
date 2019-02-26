@@ -3,7 +3,7 @@
 
   <%= f.label :name %>
   <%= f.text_field :name, class: "form-control" %>
-  <br>  
+  <br>
   <%= f.label :display_name %>
   <%= f.text_field :display_name, class: "form-control" %>
   <br>
@@ -22,7 +22,9 @@
     <%= image_tag url_for(@user.profile_picture), width: 400, class: "img-thumbnail" %><br>
     <%= link_to "Remove profile picture", user_delete_profile_picture_path(@user), method: :delete %>
   <% end %>
-  <br>
+  <br><br>
+  <%= f.label :role %>
+  <%= f.select :role, options_for_select([["User", "user"], ["Admin", "admin"]]), {}, {class: "form-control"} %>
   <br><br>
   <%= f.submit "Save", class: "btn btn-primary" %>
   <%= link_to "Cancel", root_path, class: "btn btn-outline-primary" %>

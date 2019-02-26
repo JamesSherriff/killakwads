@@ -12,35 +12,63 @@
   <p><%= @user.description %></p>
 <% end %>
 
-<h3>Builds <%= link_to new_build_path, class: "btn btn-primary pull-right" do %>New <span class="fa fa-plus"></span><% end %></h3>
-<hr>
-<% if @user.builds.length > 0 %>
-<div class="row">
-  <% @user.builds.each do |build| %>
-    <div class="col-sm-6 mb-4">
-      <a href="<%= build.rotorbuilds_url %>">
-        <div class="card">
-          <% if build.image.attached? %>
-            <img src="<%= url_for(build.image) %>" class="card-img-top" alt="<%= build.name %>">
-          <% end %>
-          <div class="card-body">
-            <h3 class="card-title"><%= build.name %></h3>
-            <br>
+<% if @user.builds.length > 0 || @user == current_user %>
+  <h3>Builds <%= link_to new_build_path, class: "btn btn-primary pull-right" do %>New <span class="fa fa-plus"></span><% end %></h3>
+  <hr>
+  <% if @user.builds.length > 0 %>
+  <div class="row">
+    <% @user.builds.each do |build| %>
+      <div class="col-sm-6 mb-4">
+        <a href="<%= build.rotorbuilds_url %>">
+          <div class="card">
+            <% if build.image.attached? %>
+              <img src="<%= url_for(build.image) %>" class="card-img-top" alt="<%= build.name %>">
+            <% end %>
+            <div class="card-body">
+              <h3 class="card-title"><%= build.name %></h3>
+              <br>
+            </div>
           </div>
-        </div>
-      </a>
-    </div>
+        </a>
+      </div>
+    <% end %>
+  </div>
+  <% else %>
+    <h4 class="mb-5">You don't have any builds yet! Why not add one?</h4>
   <% end %>
-</div>
-<% else %>
-  <h4 class="mb-5">You don't have any builds yet! Why not add one?</h4>
 <% end %>
 
-<% if @user.registrations.length > 0 %>
-  <h3>Previous Events</h3>
+<% if @user.registrations.upcoming.length > 0 %>
+  <h3>Upcoming Events Attending</h3>
   <hr>
   <div class="row">
-    <% @user.registrations.each do |registration| %>
+    <% @user.registrations.upcoming.each do |registration| %>
+      <div class="col-sm-6 mb-4">
+        <a href="<%= event_path(registration.event) %>">
+          <div class="card">
+            <% if registration.event.image.attached? %>
+              <img src="<%= url_for(registration.event.image) %>" class="card-img-top" alt="<%= registration.event.name %>">
+            <% end %>
+            <div class="card-body">
+              <h3 class="card-title"><%= registration.event.name %></h3>
+              <p class="card-text" style="color: black;"><%= registration.event.description %></p>
+              <% if registration.event.location && registration.event.location != "" %>
+                <p style="color: black;"><strong>Location: </strong><%= registration.event.location %></p>
+              <% end %>
+              <br>
+            </div>
+          </div>
+        </a>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<% if @user.registrations.finished.length > 0 %>
+  <h3>Previous Events Attended</h3>
+  <hr>
+  <div class="row">
+    <% @user.registrations.finished.each do |registration| %>
       <div class="col-sm-6 mb-4">
         <a href="<%= event_path(registration.event) %>">
           <div class="card">
