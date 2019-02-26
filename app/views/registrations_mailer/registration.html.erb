@@ -4,19 +4,19 @@
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
   </head>
   <body style="margin-left: 0px; margin-right: 0px">
-    Hi <%= @registration.user.name %>!
+    Hi <%= @registration.user.name %>!<br>
     
-    Thanks for your registration for <%= @registration.event.name %>
+    Thanks for your registration for <%= @registration.event.name %><br>
     
     <% if @registration.channel %>
-    You are on channel <%= @registration.channel.band.name %> <%= @registration.channel.name %> (<%= @registration.channel.frequency %>).
+    You are on channel <%= @registration.channel.band.name %> <%= @registration.channel.name %> (<%= @registration.channel.frequency %>).<br>
     
     <% else %>
-    You will be assigned a channel before the event, or on the day of the event. Be sure to look out for further communication.
+    You will be assigned a channel before the event, or on the day of the event. Be sure to look out for further communication.<br>
     
     <% end %>
     <% if @other_pilots.length > 0 %>
-    You will be sharing with the following pilots:
+    You will be sharing with the following pilots:<br>
     
     <table>
       <tr>
@@ -30,11 +30,11 @@
       <% end %>
     </table>
     
-    On the day of the event please only fly when you posses the Race Duck for your channel.
+    On the day of the event please only fly when you posses the Race Duck for your channel.<br>
     <% end %>
     
     <% if @registration.event.pilot_brief.attached? %>
-    We've attached the pilot's brief for this event. Please be sure to read it through, so that on the day you are ready for the event.
+    The pilots brief for this event can be found <%= link_to "here", url_for(@registration.event.pilot_brief), target: "_blank" %>. Please be sure to read it through, so that on the day of the event you are ready to fly.<br>
     <% end %>
     
     KillaKwads Events
