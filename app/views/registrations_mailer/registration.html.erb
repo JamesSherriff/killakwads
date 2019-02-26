@@ -8,8 +8,13 @@
     
     Thanks for your registration for <%= @registration.event.name %>
     
+    <% if @registration.channel %>
     You are on channel <%= @registration.channel.band.name %> <%= @registration.channel.name %> (<%= @registration.channel.frequency %>).
     
+    <% else %>
+    You will be assigned a channel before the event, or on the day of the event. Be sure to look out for further communication.
+    
+    <% end %>
     <% if @other_pilots.length > 0 %>
     You will be sharing with the following pilots:
     

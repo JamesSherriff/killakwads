@@ -23,6 +23,9 @@ class RegistrationsController < ApplicationController
     end
     if registration_params[:event_id]
       @registration.event = Event.find(registration_params[:event_id])
+      if !@registration.event.registration_open?
+        redirect_to event_path, notice: "Sorry, that event is currently full." and return
+      end
     else
       redirect_to root_path, alert: "You can't register without selecting an event." and return
     end

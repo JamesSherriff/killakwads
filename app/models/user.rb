@@ -4,9 +4,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :omniauthable, omniauth_providers: [:google_oauth2, :facebook]
   
-  has_many :registrations
+  has_many :registrations, dependent: :destroy
   has_many :channels, through: :registrations
-  has_many :builds
+  has_many :builds, dependent: :destroy
   
   has_one_attached :profile_picture
   

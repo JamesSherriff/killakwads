@@ -2,7 +2,11 @@
   <% if @user.profile_picture.attached? %>
     <%= image_tag url_for(@user.profile_picture), height: 150, width: 150, style: "border-radius: 50%" %>
   <% end %>
-  <h1><%= @user.display_name || @user.name %></h1>
+  <% if @user.display_name && @user.display_name != "" then %>
+  <h1><%= @user.display_name %></h1>
+  <% else %>
+  <h1><%= @user.name %></h1>
+  <% end %>
   <hr>
 </center>
 

@@ -1,6 +1,6 @@
 class Registration < ApplicationRecord
   belongs_to :user
-  belongs_to :channel
+  belongs_to :channel, optional: true
   belongs_to :event
   
   validate :not_already_registered

@@ -12,6 +12,16 @@
   <br>
   <%= f.label :channel_allocation_method %>
   <%= f.select :channel_allocation_method, options_for_select([["Manual", "manual"], ["Pilot's choice", "pilot"]]), {}, {class: "form-control"} %>
+  <br>  
+  <div hidden id="channel-selection">
+    <%= f.label :channels %>
+    <%= f.select :channel_ids, Channel.all.collect { |c| ["#{c.band.name} #{c.name} - #{c.frequency}", c.id]}, {}, {multiple: true, class: "form-control"} %>
+    <small class="form-text">Select the channels pilots are able to choose from.</small>
+    <br>
+  </div>
+  <%= f.label :pilot_limit %>
+  <%= f.number_field :pilot_limit, class: "form-control" %>
+  <small class="form-text">Limit the number of pilots that can register for this event. Set to 0 for unlimited pilots if you're brave!</small>
   <br>
   <%= f.label :start %>
   <div class="input-group date" data-target-input="nearest" id="start_picker">
@@ -45,9 +55,6 @@
     </div>
   </div>
   <br>
-  <%= f.label :channels %>
-  <%= f.select :channel_ids, Channel.all.collect { |c| ["#{c.band.name} #{c.name} - #{c.frequency}", c.id]}, {}, {multiple: true, class: "form-control"} %>
-  <br>
   <%= f.label :image %>
   <div class="custom-file mb-2">
     <%= f.file_field :image, class: "" %>
@@ -68,8 +75,13 @@
     <p><strong>Current file: </strong><%= @event.pilot_brief.blob.filename %></p>
   <% end %>
   <br>
+  <%= f.label :pilot_brief_downloadable %>
+  <%= f.select :pilot_brief_downloadable, options_for_select([["Yes", true], ["No", false]]), {}, {class: "form-control"} %>
+  <small class="form-text">Should pilots be able to download the pilot brief from the events page? It will also be emailed to them.</small>
+  <br>
   <%= f.label :stream_url %>
   <%= f.text_field :stream_url, class: "form-control", placeholder: "Leave blank if not streaming event." %>
+  <small class="form-text">Please enter the full URL of the <strong>Twitch</strong> channel or stream you want to be displayed.</small>
   <br>
   <br><br>
   <%= f.submit class: "btn btn-primary" %>
@@ -82,5 +94,13 @@
     $('#finish_picker').datetimepicker({keepInvalid: true, format: 'DD/MM/YYYY HH:mm:ss'});
     $('#registration_start_picker').datetimepicker({keepInvalid: true, format: 'DD/MM/YYYY HH:mm:ss'});
     $('#registration_end_picker').datetimepicker({keepInvalid: true, format: 'DD/MM/YYYY HH:mm:ss'});
+    $('#event_channel_allocation_method').on('change', function() {
+      if($(this).val() == "pilot") {
+        $('#channel-selection').show();
+      }
+      else {
+        $('#channel-selection').hide();
+      }
+    });
   });
 </script>

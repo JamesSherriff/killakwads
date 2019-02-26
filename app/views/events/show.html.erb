@@ -2,7 +2,7 @@
   <div class="alert alert-warning">This event has finished.</div>
 <% end %>
 <% if current_user.registered_for?(@event) %>
-  <div class="alert alert-notice">You're registered for this event on <%= current_user.registration_for(@event).channel.band.name %> <%= current_user.registration_for(@event).channel.name %> (<%= current_user.registration_for(@event).channel.frequency %>). <% if @event.registration_open? %>Want to change your registration? <%= link_to "Click Here", edit_registration_path(current_user.registration_for(@event)) %><% end %></div>
+  <div class="alert alert-notice">You're registered for this event <% if current_user.registration_for(@event).channel %>on <%= current_user.registration_for(@event).channel.band.name %> <%= current_user.registration_for(@event).channel.name %> (<%= current_user.registration_for(@event).channel.frequency %>)<% end %>. <% if @event.registration_open? %>Want to change your registration? <%= link_to "Click Here", edit_registration_path(current_user.registration_for(@event)) %> Want to cancel your registration? <%= link_to "Click Here", registration_path(current_user.registration_for(@event)), method: :delete %><% end %></div>
 <% end %>
 <% if @event.registration_start > Time.now %>
   <div class="alert alert-notice">Registration opens in <strong id="registration_starts_in"></strong></div>
@@ -33,6 +33,9 @@
         <p><strong>End: </strong><%= @event.finish.strftime("%d/%m/%Y - %H:%M") %></p>
         <p><strong>Registration Start: </strong><%= @event.registration_start.strftime("%d/%m/%Y - %H:%M") %></p>
         <p><strong>Registration End: </strong><%= @event.registration_end.strftime("%d/%m/%Y - %H:%M") %></p>
+        <% if @event.pilot_brief && @event.pilot_brief_downloadable %>
+          <p><strong>Pilot's Guide: </strong> <%= link_to "Download", url_for(@event.pilot_brief), target: "_blank" %></p>
+        <% end %>
       </div>
     </div>
     <% if @event.registration_open? && @event.registrations.length > 0 %>
@@ -42,13 +45,13 @@
       </div>
       <div class="card-body">
         <% @event.registrations.each do |registration| %>
-          <% if registration.user && registration.user.profile_picture.attached? %>
+          <% if registration.user.profile_picture.attached? %>
             <center class="mb-1">
               <%= image_tag url_for(registration.user.profile_picture), class: "img-thumbnail" %>
             </center>
           <% elsif registration.user.profile_picture_url %>
           <% end %>
-          <strong><%= registration.user.name %></strong> on <strong><%= registration.channel.band.name %> <%= registration.channel.name %></strong>
+          <strong><%= registration.user.name %></strong> <% if registration.channel %>on <strong><%= registration.channel.band.name %> <%= registration.channel.name %></strong><% end %>
         <hr>
         <% end %>
       </div>

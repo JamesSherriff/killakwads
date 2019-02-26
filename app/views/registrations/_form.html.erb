@@ -2,6 +2,12 @@
   <% if @registration.errors.messages[:user].include? "registered" %>
   <div class="alert alert-warning">You're already registered for this event.</div>
   <% end %>
+
+  <%= form_errors_for @registration %>
+  <% if params[:action] == "edit" %>
+  <br>
+  <p><strong>Want to cancel your registration? </strong><%= link_to "Click Here", registration_path(@registration), method: :delete %></p>
+  <% end %>
   <br>
   <%= f.hidden_field :event_id, value: params[:event_id] %>
   <%= f.hidden_field :user_id, value: params[:user_id] %>
