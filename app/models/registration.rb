@@ -9,7 +9,8 @@ class Registration < ApplicationRecord
   scope :upcoming, -> {joins(:event).where("events.start > ?", Time.now)}
   
   def not_already_registered
-    if Registration.find_by(event: event, user: user) != nil
+    reg = Registration.find_by(event: event, user: user)
+    if reg != self && reg != nil
       errors.add(:user, "registered")
     end
   end
