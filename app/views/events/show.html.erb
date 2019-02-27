@@ -33,7 +33,7 @@
         <p><strong>End: </strong><%= @event.finish.strftime("%d/%m/%Y - %H:%M") %></p>
         <p><strong>Registration Start: </strong><%= @event.registration_start.strftime("%d/%m/%Y - %H:%M") %></p>
         <p><strong>Registration End: </strong><%= @event.registration_end.strftime("%d/%m/%Y - %H:%M") %></p>
-        <% if @event.pilot_brief && @event.pilot_brief_downloadable %>
+        <% if @event.pilot_brief.attached? && @event.pilot_brief_downloadable %>
           <p><strong>Pilot's Guide: </strong> <%= link_to "Download", url_for(@event.pilot_brief), target: "_blank" %></p>
         <% end %>
       </div>
