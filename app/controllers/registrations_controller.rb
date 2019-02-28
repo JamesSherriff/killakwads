@@ -36,7 +36,7 @@ class RegistrationsController < ApplicationController
     if can? :update, @registration
       if @registration.update(registration_params)
         if @registration.event && @registration.channel
-          @registration.event.registrations.where(channel: @registration.channel).where("id != ?", @registration.id).each do |clashing_registration|
+          @registration.clashing.each do |clashing_registration|
             RegistrationsMailer.registration_clash(clashing_registration).deliver_now
           end
         end

@@ -14,4 +14,8 @@ class Registration < ApplicationRecord
       errors.add(:user, "registered")
     end
   end
+  
+  def clashing
+    event.registrations.where(channel: channel).where("id != ?", id)
+  end
 end
