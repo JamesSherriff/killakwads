@@ -1,0 +1,16 @@
+<%= form_for [@result.result_set.event, @result.result_set, @result] do |f| %>
+  <%= f.hidden_field :result_set_id %>
+
+  <%= f.label :pilot %>
+  <%= f.select :user_id, @result.result_set.event.registrations.collect { |reg| [reg.user.name, reg.user.id]}, {}, {class: "form-control"} %>
+  <p>User not in this list? <%= link_to "Click here", new_registration_path(event_id: @result.result_set.event) %> to register them for this event.</p>
+  <br>
+  <%= f.label :position %>
+  <%= f.number_field :position, class: "form-control" %>
+  <br>
+  <%= f.label :result %>
+  <%= f.text_field :result, class: "form-control", placeholder: "i.e. 12.45s or 15 laps" %>
+  <br>
+  <%= f.submit "Save", class: "btn btn-primary" %>
+  <%= link_to "Cancel", manage_event_path(@result.result_set.event, section: "results"), class: "btn btn-outline-primary" %>
+<% end %>

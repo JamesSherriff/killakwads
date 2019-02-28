@@ -19,3 +19,10 @@ $(document).ready(function() {
   bsCustomFileInput.init();
   $('.alert').alert();
 });
+
+function showManagementPage(navButton, pageID) {
+  $('#event-management-sections').children().hide();
+  $(pageID).show();
+  $('.event-management-nav').removeClass('active');
+  $(navButton).addClass('active');
+}

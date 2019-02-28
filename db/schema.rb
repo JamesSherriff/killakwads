@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_27_200439) do
+ActiveRecord::Schema.define(version: 2019_02_28_162649) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,7 +82,7 @@ ActiveRecord::Schema.define(version: 2019_02_27_200439) do
     t.datetime "updated_at", null: false
     t.datetime "registration_start"
     t.datetime "registration_end"
-    t.string "stream_url"
+    t.string "stream_id"
     t.string "channel_allocation_method"
     t.integer "pilot_limit", default: 0
     t.boolean "pilot_brief_downloadable"
@@ -103,6 +103,23 @@ ActiveRecord::Schema.define(version: 2019_02_27_200439) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "skill_level"
+  end
+
+  create_table "result_sets", force: :cascade do |t|
+    t.integer "event_id"
+    t.string "name"
+    t.string "result_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "results", force: :cascade do |t|
+    t.integer "result_set_id"
+    t.integer "user_id"
+    t.integer "position"
+    t.string "result"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|

@@ -1,0 +1,12 @@
+<%= form_for [@event, @result_set] do |f| %>
+  <%= f.hidden_field :event_id %>
+
+  <%= f.label :name %>
+  <%= f.text_field :name, class: "form-control" %>
+  <br>
+  <%= f.label :result_type %>
+  <%= f.select :result_type, options_for_select([["Lap Count", "laps"], ["Time", "time"], ["Points", "points"]]), {}, {class: "form-control"} %>
+  <br>
+  <%= f.submit class: "btn btn-primary" %>
+  <%= link_to "Cancel", manage_event_path(@result_set.event, section: "results"), class: "btn btn-outline-primary" %>
+<% end %>

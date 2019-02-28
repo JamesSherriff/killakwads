@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_many :registrations, dependent: :destroy
   has_many :channels, through: :registrations
   has_many :builds, dependent: :destroy
+  has_many :results, dependent: :destroy
   
   has_one_attached :profile_picture
   

@@ -1,6 +1,7 @@
 class Event < ApplicationRecord
   has_and_belongs_to_many :channels
   has_many :registrations, dependent: :destroy
+  has_many :result_sets, dependent: :destroy
   
   has_one_attached :image
   has_one_attached :pilot_brief
@@ -19,6 +20,14 @@ class Event < ApplicationRecord
     else
       false
     end
+  end
+  
+  def running? 
+    started? && !finished?
+  end
+  
+  def started? 
+    (start < Time.now)
   end
   
   def finished?

@@ -18,6 +18,44 @@
         <%= image_tag url_for(@event.image), class: "mb-3", style: "width: 100%; overflow: hidden" %>
       </div>
     <% end %>
+    <% if @event.running? && @event.stream_id != nil %>
+      <iframe
+        src="https://player.twitch.tv/?<%= @event.stream_id %>"
+        height="300"
+        width="400"
+        frameborder="<frameborder>"
+        scrolling="<scrolling>"
+        allowfullscreen="<allowfullscreen>">
+      </iframe>
+    <% end %>
+    
+    <% if @event.result_sets.length > 0 %>
+      <div id="results">
+        <h2>Results</h2>
+        <hr>
+        <% @event.result_sets.each do |result_set| %>
+          <h4><%= result_set.name %></h4>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Pilot</th>
+                <th>Position</th>
+                <th><% if result_set.result_type == "time" %>Time<% elsif result_set.result_type == "laps" %>Laps<% elsif result_set.result_type == "points" %>Points<% end %></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% result_set.results.order("position").each do |result| %>
+                <tr>
+                  <td><%= result.user.name %></td>
+                  <td><%= result.position %></td>
+                  <td><%= result.result %></td>
+                </tr>
+              <% end %>
+            </tbody>  
+          </table>
+        <% end %>
+      </div>
+    <% end %>
   </div>
   <div class="col-sm-4">
     <div class="card mb-4">

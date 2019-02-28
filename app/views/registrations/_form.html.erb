@@ -10,7 +10,15 @@
   <% end %>
   <br>
   <%= f.hidden_field :event_id, value: params[:event_id] %>
-  <%= f.hidden_field :user_id, value: params[:user_id] %>
+
+  <% if current_user.admin? %>
+    <%= f.label :user %>
+    <%= f.select :user_id, User.all.collect { |u| [u.name, u.id] }, {}, {class: "form-control"} %>
+    <p class="text-secondary">Manual user selection is only available for admins.</p>
+    <p>User not in this list? <%= link_to "Click here", new_user_path %> to add them.</p>
+  <% else %>
+    <%= f.hidden_field :user_id, value: params[:user_id] %>
+  <% end %>
 
   <%= f.label :channel %>
   <% if @registration.event.channel_allocation_method == "pilot" then %>

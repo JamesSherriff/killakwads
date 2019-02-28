@@ -6,7 +6,7 @@ class RegistrationsController < ApplicationController
     if params[:user_id]
       @registration.user = User.find(params[:user_id])
     end
-    if params[:event_id]
+    if params[:event_id] || current_user.admin?
       @registration.event = Event.find(params[:event_id])
     else
       redirect_to root_path, alert: "You can't register without selecting an event."

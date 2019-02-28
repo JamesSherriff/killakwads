@@ -113,6 +113,6 @@ class EventsController < ApplicationController
   
   private
   def event_params
-    params.require(:event).permit(:name, :description, :location, :start, :finish, :registration_start, :registration_end, :image, :pilot_limit, :pilot_brief, :pilot_brief_downloadable, :channel_allocation_method, channel_ids: [])
+    params.require(:event).permit(:name, :description, :location, :start, :finish, :registration_start, :registration_end, :image, :pilot_limit, :stream_id, :pilot_brief, :pilot_brief_downloadable, :channel_allocation_method, channel_ids: [])
   end
 end

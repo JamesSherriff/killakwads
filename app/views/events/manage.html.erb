@@ -1,17 +1,71 @@
-<ul class="nav nav-pills flex-column col-2">
-  <li class="nav-item">
-    <a class="nav-link active" href="#">Event Details</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">Registrations</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">Results</a>
-  </li>
-</ul>
+<div class="row">
+  <ul class="nav nav-pills flex-column col-2">
+    <li class="nav-item">
+      <a class="nav-link <% if params[:section].nil? || params[:section] == "details" %>active<% end %> event-management-nav" href="#" onClick="showManagementPage(this, '#details')">Event Details</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link <% if !params[:section].nil? && params[:section] == "registrations" %>active<% end %> event-management-nav" href="#" onClick="showManagementPage(this, '#registrations')">Registrations</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link <% if !params[:section].nil? && params[:section] == "results" %>active<% end %> event-management-nav" href="#" onClick="showManagementPage(this, '#results')">Results</a>
+    </li>
+  </ul>
 
-<div class="col-10">
-  <div id="details">
-    <%= render "form" %>
+  <div class="col-10" id="event-management-sections">
+    <div id="details" <% if !params[:section].nil? && params[:section] != "details" %>style="display: none;"<% end %>>
+      <h2 class="mb-3">Manage Event - Edit Details</h2>
+      <%= render "form" %>
+    </div>
+    <div id="registrations" <% if params[:section].nil? || params[:section] != "registrations" %>style="display: none;"<% end %>>
+      <h2 class="mb-3">Manage Event - Registrations <%= link_to "Manually Register User", new_registration_path(event_id: @event.id), class: "btn btn-primary pull-right" %> <%= link_to event_registrations_path(@event, format: :csv), class: "btn btn-primary pull-right" do %>Download <span class="fa fa-download"></span><% end %></h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Channel</th>
+            <th>Skill Level</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @event.registrations.each do |registration| %>
+            <tr>
+              <td><%= registration.user.name %></td>
+              <td><% if registration.channel %><%= registration.channel.band.name %> <%= registration.channel.name %> (<%= registration.channel.frequency %>)<% end %></td>
+              <td><%= registration.skill_level || "Not Provided" %></td>
+              <td><%= registration.notes %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    
+    <div id="results" <% if params[:section].nil? || params[:section] != "results" %>style="display: none;"<% end %>>
+      <h2>Manage Event - Results <%= link_to "New Result Set", new_event_result_set_path(@event), class: "btn btn-primary pull-right" %></h2>
+      <hr>
+      <% @event.result_sets.each do |result_set| %>
+        <h3><%= result_set.name %> <%= link_to "Delete", event_result_set_path(event_id: @event.id, result_set_id: result_set.id), method: :delete, class: "btn btn-danger pull-right" %> <%= link_to "Edit", edit_event_result_set_path(event_id: @event.id, result_set_id: result_set.id), class: "btn btn-warning pull-right" %> <%= link_to "New Result", new_event_result_set_result_path(event_id: @event.id, result_set_id: result_set.id), class: "btn btn-primary pull-right" %></h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Pilot</th>
+              <th>Position</th>
+              <th><% if result_set.result_type == "time" %>Time<% elsif result_set.result_type == "laps" %>Laps<% elsif result_set.result_type == "points" %>Points<% end %></th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% result_set.results.order("position").each do |result| %>
+              <tr>
+                <td><%= result.user.name %></td>
+                <td><%= result.position %></td>
+                <td><%= result.result %></td>
+                <td><%= link_to "Edit", edit_event_result_set_result_path(event_id: @event.id, result_set_id: result_set.id, id: result.id) %> | <%= link_to "Delete", event_result_set_result_path(event_id: @event.id, result_set_id: result_set.id, id: result.id), method: :delete %></td>
+              </tr>
+            <% end %>
+          </tbody>  
+        </table>
+      <% end %>
+    </div>
   </div>
 </div>
