@@ -12,58 +12,65 @@ class UsersController < ApplicationController
   
   def new
     @user = User.new
+    if cannot? :create, @user
+      redirect_to root_path, notice: "You need to be an admin to do that."
+    end
   end
   
   def create
     @user = User.new
-    if !current_user.admin?
-      redirect_to root_path, notice: "You need to be an admin to do that." and return
-    end
-    if @user.update(User_params)
-      redirect_to user_path(@user), notice: "Successfully created User."
+    if can? :create, @user
+      if @user.update(User_params)
+        redirect_to user_path(@user), notice: "Successfully created User."
+      else
+        render :new
+      end
     else
-      render :new
+      redirect_to root_path, notice: "You need to be an admin to do that."
     end
   end
   
   def edit
     @user = User.find(params[:id])
-    if !(current_user.admin? || @user == current_user)
-      redirect_to root_path, notice: "You need to be an admin to do that." and return
+    if cannot? :update, @user
+      redirect_to root_path, notice: "You need to be an admin to do that."
     end
   end
   
   def update
     @user = User.find(params[:id])
-    if !(current_user.admin? || @user == current_user)
-      redirect_to root_path, notice: "You need to be an admin to do that." and return
-    end
-    if @user.update(user_params)
-      redirect_to user_path(@user), notice: "Succesfully updated User."
+    if can? :update, @user
+      if @user.update(user_params)
+        redirect_to user_path(@user), notice: "Succesfully updated User."
+      else
+        render :edit
+      end
     else
-      render :edit
+      redirect_to root_path, notice: "You need to be an admin to do that."
     end
   end
   
   def destroy
     @user = User.find(params[:id])
-    if !(current_user.admin? || @user == current_user)
-      redirect_to root_path, notice: "You need to be an admin to do that." and return
-    end
-    if @user.destroy then
-      redirect_to users_path, notice: "User deleted."
+    if can? :destroy, @user
+      if @user.destroy then
+        redirect_to users_path, notice: "User deleted."
+      else
+        redirect_to users_path, notice: "Unable to delete User."
+      end
     else
-      redirect_to users_path, notice: "Unable to delete User."
+      redirect_to root_path, notice: "You need to be an admin to do that."
     end
   end
   
   def delete_profile_picture
     @user = User.find(params[:id])
-    if !(current_user.admin? || @user == current_user)
-      redirect_to root_path, notice: "You need to be an admin to do that." and return
+    if can? :update, @user
+      @user.profile_picture.purge
+      render :edit
+    else
+      redirect_to root_path, notice: "You need to be an admin to do that."
     end
-    @user.profile_picture.purge
-    render :edit
   end
   
   private

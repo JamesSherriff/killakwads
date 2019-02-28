@@ -7,34 +7,52 @@ class ChannelsController < ApplicationController
   
   def new
     @channel = Channel.new
+    if cannot? :create, @channel
+      redirect_to root_path, notice: "You need to be an admin to do that."
+    end
   end
   
   def create
     @channel = Channel.new
-    if @channel.update(channel_params)
-      redirect_to channels_path, notice: "Saved channel."
+    if can? :create, @channel
+      if @channel.update(channel_params)
+        redirect_to channels_path, notice: "Saved channel."
+      else
+        render :new
+      end
     else
-      render :new
+      redirect_to root_path, notice: "You need to be an admin to do that."
     end
   end
   
   def edit
     @channel = Channel.find(params[:id])
+    if cannot? :update, @channel
+      redirect_to root_path, notice: "You need to be an admin to do that."
+    end
   end
   
   def update
     @channel = Channel.find(params[:id])
-    if @channel.update(channel_params)
-      redirect_to channels_path, notice: "Channel updated."
+    if can? :update, @channel
+      if @channel.update(channel_params)
+        redirect_to channels_path, notice: "Channel updated."
+      else
+        render :edit
+      end
     else
-      render :edit
+      redirect_to root_path, notice: "You need to be an admin to do that."
     end
   end
   
   def destroy
     @channel = Channel.find(params[:id])
-    @channel.destroy
-    redirect_to channels_path, notice: "Channel deleted."
+    if can? :destroy, @channel
+      @channel.destroy
+      redirect_to channels_path, notice: "Channel deleted."
+    else
+      redirect_to root_path, notice: "You need to be an admin to do that."
+    end
   end
   
   private

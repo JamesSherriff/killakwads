@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_26_222747) do
+ActiveRecord::Schema.define(version: 2019_02_27_200439) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,6 +64,14 @@ ActiveRecord::Schema.define(version: 2019_02_26_222747) do
     t.index ["event_id", "channel_id"], name: "index_channels_events_on_event_id_and_channel_id"
   end
 
+  create_table "event_series", force: :cascade do |t|
+    t.integer "event_id"
+    t.string "schedule_type"
+    t.integer "schedule_length"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "events", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -78,6 +86,7 @@ ActiveRecord::Schema.define(version: 2019_02_26_222747) do
     t.string "channel_allocation_method"
     t.integer "pilot_limit", default: 0
     t.boolean "pilot_brief_downloadable"
+    t.integer "event_series_id"
   end
 
   create_table "events_users", id: false, force: :cascade do |t|

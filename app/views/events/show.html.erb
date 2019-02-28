@@ -60,7 +60,7 @@
   </div>
   <%= link_to "Back to all events", events_path, class: "mt-4 btn btn-primary" %>
   <% if current_user.admin? %>
-    <%= link_to "Edit", edit_event_path(@event), class: "mt-4 btn btn-warning" %>
+    <%= link_to "Manage", manage_event_path(@event), class: "mt-4 btn btn-warning" %>
   <% end %>
 </div>
 

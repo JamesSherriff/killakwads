@@ -5,6 +5,8 @@ class Event < ApplicationRecord
   has_one_attached :image
   has_one_attached :pilot_brief
   
+  belongs_to :event_series, optional: true
+  
   scope :registration_open, -> {where("registration_start < ? AND registration_end > ?", Time.now, Time.now)}
   
   def registration_open?

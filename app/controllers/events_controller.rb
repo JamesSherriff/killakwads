@@ -12,49 +12,78 @@ class EventsController < ApplicationController
     render :index
   end
   
+  def manage
+    @event = Event.find(params[:id])
+    if cannot? :manage, @event
+      redirect_to root_path, notice: "You need to be an admin to do that."
+    end
+  end
+  
   def show
     @event = Event.find(params[:id])
   end
   
   def new
     @event = Event.new
+    if cannot? :create, @event
+      redirect_to root_path, notice: "You need to be an admin to do that."
+    end
   end
   
   def create
     @event = Event.new
-    if @event.update(event_params)
-      redirect_to event_path(@event), notice: "Successfully created event."
+    if can? :create, @event
+      if @event.update(event_params)
+        redirect_to event_path(@event), notice: "Successfully created event."
+      else
+        render :new
+      end
     else
-      render :new
+      redirect_to root_path, notice: "You need to be an admin to do that."
     end
   end
   
   def edit
     @event = Event.find(params[:id])
+    if cannot? :update, @event
+      redirect_to root_path, notice: "You need to be an admin to do that."
+    end
   end
   
   def update
     @event = Event.find(params[:id])
-    if @event.update(event_params)
-      redirect_to event_path(@event), notice: "Succesfully updated event."
+    if can? :update, @event
+      if @event.update(event_params)
+        redirect_to event_path(@event), notice: "Succesfully updated event."
+      else
+        render :edit
+      end
     else
-      render :edit
+      redirect_to root_path, notice: "You need to be an admin to do that."
     end
   end
   
   def destroy
     @event = Event.find(params[:id])
-    if @event.destroy then
-      redirect_to events_path, notice: "Event deleted."
+    if can? :destroy, @event
+      if @event.destroy
+        redirect_to events_path, notice: "Event deleted."
+      else
+        redirect_to events_path, notice: "Unable to delete event."
+      end
     else
-      redirect_to events_path, notice: "Unable to delete event."
+      redirect_to root_path, notice: "You need to be an admin to do that."
     end
   end
   
   def delete_image
     @event = Event.find(params[:id])
-    @event.image.purge
-    render :edit
+    if can? :update, @event
+      @event.image.purge
+      render :edit
+    else
+      redirect_to root_path, notice: "You need to be an admin to do that."
+    end
   end
     
   def check_channel
@@ -69,8 +98,6 @@ class EventsController < ApplicationController
   def registrations
     @event = Event.find(params[:id])
     registrations = @event.registrations
-    
-
     registrations_csv = CSV.generate(headers: true) do |csv|
       csv << ["email", "name", "channel"]
 

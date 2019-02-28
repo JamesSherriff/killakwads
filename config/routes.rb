@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   
   root 'events#index'
   
+  get '/events/:id/manage', to: 'events#manage', as: 'manage_event'
   get '/events/:id/registrations', to: 'events#registrations', as: 'event_registrations'
   get '/events/previous', to: 'events#previous', as: 'previous_events'
   resources :events do
