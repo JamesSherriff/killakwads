@@ -5,7 +5,7 @@
 Devise.setup do |config|
   
   config.omniauth :google_oauth2, Rails.application.credentials.google_client_id, Rails.application.credentials.google_client_secret
-  config.omniauth :facebook, Rails.application.credentials.facebook_client_id, Rails.application.credentials.facebook_client_secret, scope: "email", token_params: { parse: :json }
+  config.omniauth :facebook, Rails.application.credentials.facebook_client_id, Rails.application.credentials.facebook_client_secret, scope: "email", fields: "email,name"
   
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing
@@ -177,7 +177,7 @@ Devise.setup do |config|
   # ==> Configuration for :timeoutable
   # The time you want to timeout the user session without activity. After this
   # time the user will be asked for credentials again. Default is 30 minutes.
-  # config.timeout_in = 30.minutes
+  config.timeout_in = 1.week
 
   # ==> Configuration for :lockable
   # Defines which strategy will be used to lock an account.
