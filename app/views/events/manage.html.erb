@@ -7,15 +7,23 @@
       <a class="nav-link <% if !params[:section].nil? && params[:section] == "registrations" %>active<% end %> event-management-nav" href="#" onClick="showManagementPage(this, '#registrations')">Registrations</a>
     </li>
     <li class="nav-item">
+      <a class="nav-link <% if !params[:section].nil? && params[:section] == "stream" %>active<% end %> event-management-nav" href="#" onClick="showManagementPage(this, '#stream')">Stream</a>
+    </li>
+    <li class="nav-item">
       <a class="nav-link <% if !params[:section].nil? && params[:section] == "results" %>active<% end %> event-management-nav" href="#" onClick="showManagementPage(this, '#results')">Results</a>
+    </li>
+    <li class="nav-item">
+      <%= link_to "Show Event", event_path(@event), class: "nav-link" %>
     </li>
   </ul>
 
   <div class="col-10" id="event-management-sections">
+    
     <div id="details" <% if !params[:section].nil? && params[:section] != "details" %>style="display: none;"<% end %>>
       <h2 class="mb-3">Manage Event - Edit Details <%= link_to "Clone Event", clone_event_path(@event.id), class: "btn btn-primary pull-right" %></h2>
       <%= render "form" %>
     </div>
+    
     <div id="registrations" <% if params[:section].nil? || params[:section] != "registrations" %>style="display: none;"<% end %>>
       <h2 class="mb-3">Manage Event - Registrations <%= link_to "Manually Register User", new_registration_path(event_id: @event.id), class: "btn btn-primary pull-right" %> <%= link_to event_registrations_path(@event, format: :csv), class: "btn btn-primary pull-right" do %>Download <span class="fa fa-download"></span><% end %></h2>
       <table class="table">
@@ -25,6 +33,7 @@
             <th>Channel</th>
             <th>Skill Level</th>
             <th>Notes</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -34,10 +43,24 @@
               <td><% if registration.channel %><%= registration.channel.band.name %> <%= registration.channel.name %> (<%= registration.channel.frequency %>)<% end %></td>
               <td><%= registration.skill_level || "Not Provided" %></td>
               <td><%= registration.notes %></td>
+              <th><%= link_to "Edit", edit_registration_path(registration) %></th>
             </tr>
           <% end %>
         </tbody>
       </table>
+    </div>
+    
+    <div id="stream">
+      <h2>Manage Event - Live Stream</h2>
+      <%= form_for @event do |f| %>
+        <%= f.label :stream_id %>
+        <%= f.text_field :stream_id, class: "form-control" %>
+        <br>
+        <%= f.label :streaming %>
+        <%= f.select :streaming, options_for_select([["Yes", true], ["No", false]]), {}, {class: "form-control"} %>
+        <br>
+        <%= f.submit "Save", class: "btn btn-primary" %>
+      <% end %>
     </div>
     
     <div id="results" <% if params[:section].nil? || params[:section] != "results" %>style="display: none;"<% end %>>
@@ -67,5 +90,6 @@
         </table>
       <% end %>
     </div>
+    
   </div>
 </div>

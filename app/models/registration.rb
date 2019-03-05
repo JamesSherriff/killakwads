@@ -6,7 +6,7 @@ class Registration < ApplicationRecord
   validate :not_already_registered
   
   scope :finished, -> {joins(:event).where("events.finish < ?", Time.now)}
-  scope :upcoming, -> {joins(:event).where("events.start > ?", Time.now)}
+  scope :upcoming, -> {joins(:event).where("events.finish > ?", Time.now)}
   
   def not_already_registered
     reg = Registration.find_by(event: event, user: user)

@@ -23,6 +23,11 @@ class User < ApplicationRecord
     registrations.find_by(event: event.id)
   end
   
+  def self.not_registered_for(event)
+    users = Registration.where(event: event).collect { |r| r.user.id }
+    where.not(id: users)
+  end
+  
   def self.from_omniauth(access_token)
     data = access_token.info
     user = User.where(email: data['email']).first

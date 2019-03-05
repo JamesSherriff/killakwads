@@ -1,6 +1,10 @@
 <%= form_for @event do |f| %>
   <%= form_errors_for @event %>
 
+  <%= f.label :series %>
+  <%= f.select :event_series_id, EventSeries.all.collect { |es| [es.name, es.id] }, {}, {class: "form-control"} %>
+  <small class="form-text">Can't see the series this event is part of? Create it <%= link_to "here", new_event_series_path %></small>
+  <br>
   <%= f.label :name %>
   <%= f.text_field :name, class: "form-control" %>
   <br>
@@ -79,10 +83,6 @@
   <%= f.label :pilot_brief_downloadable %>
   <%= f.select :pilot_brief_downloadable, options_for_select([["Yes", true], ["No", false]]), {}, {class: "form-control"} %>
   <small class="form-text">Should pilots be able to download the pilot brief from the events page? It will also be emailed to them.</small>
-  <br>
-  <%= f.label :stream_id %>
-  <%= f.text_field :stream_id, class: "form-control", placeholder: "Leave blank if not streaming event." %>
-  <small class="form-text">Please enter the ID or name of the <strong>Twitch</strong> channel you want to be displayed.</small>
   <br>
   <br><br>
   <%= f.submit "Save", class: "btn btn-primary" %>

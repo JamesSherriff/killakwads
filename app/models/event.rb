@@ -2,6 +2,7 @@ class Event < ApplicationRecord
   has_and_belongs_to_many :channels
   has_many :registrations, dependent: :destroy
   has_many :result_sets, dependent: :destroy
+  has_many :results, through: :result_sets
   
   has_one_attached :image
   has_one_attached :pilot_brief

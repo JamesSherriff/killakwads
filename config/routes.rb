@@ -4,6 +4,12 @@ Rails.application.routes.draw do
   
   root 'events#index'
   
+  get '/privacy-policy', to: 'pages#privacy_policy', as: 'privacy_policy'
+  
+  resources :event_series do
+    delete '/:id/image', to: 'event_series#delete_image', as: 'delete_image'
+  end
+  
   get '/events/previous', to: 'events#previous', as: 'previous_events'
   resources :events do
     resources :result_sets do
@@ -20,8 +26,9 @@ Rails.application.routes.draw do
   resources :channels
   resources :bands
   resources :registrations
-  resources :users do
-    delete '/:id/profile_picture', to: 'users#delete_profile_picture', as: 'delete_profile_picture'
+  post '/users/create', to: 'users#create', as: 'create_user'
+  resources :users, except: [:create] do
+    delete '/profile_picture', to: 'users#delete_profile_picture', as: 'delete_profile_picture'
   end
   resources :api
   

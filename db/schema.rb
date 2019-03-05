@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_28_162649) do
+ActiveRecord::Schema.define(version: 2019_03_05_135127) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,6 +87,9 @@ ActiveRecord::Schema.define(version: 2019_02_28_162649) do
     t.integer "pilot_limit", default: 0
     t.boolean "pilot_brief_downloadable"
     t.integer "event_series_id"
+    t.boolean "paid"
+    t.decimal "price", precision: 8, scale: 2
+    t.boolean "streaming", default: false
   end
 
   create_table "events_users", id: false, force: :cascade do |t|
@@ -103,6 +106,9 @@ ActiveRecord::Schema.define(version: 2019_02_28_162649) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "skill_level"
+    t.string "payment_method"
+    t.boolean "paid"
+    t.integer "ticket_type_id"
   end
 
   create_table "result_sets", force: :cascade do |t|
@@ -118,6 +124,14 @@ ActiveRecord::Schema.define(version: 2019_02_28_162649) do
     t.integer "user_id"
     t.integer "position"
     t.string "result"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "ticket_types", force: :cascade do |t|
+    t.string "name"
+    t.decimal "price", precision: 8, scale: 2
+    t.integer "event_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

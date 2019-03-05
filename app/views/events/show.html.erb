@@ -18,15 +18,17 @@
         <%= image_tag url_for(@event.image), class: "mb-3", style: "width: 100%; overflow: hidden" %>
       </div>
     <% end %>
-    <% if @event.running? && @event.stream_id != nil %>
-      <iframe
-        src="https://player.twitch.tv/?<%= @event.stream_id %>"
-        height="300"
-        width="400"
-        frameborder="<frameborder>"
-        scrolling="<scrolling>"
-        allowfullscreen="<allowfullscreen>">
-      </iframe>
+    <% if @event.streaming && @event.stream_id != nil %>
+      <div id="stream" class="mb-5">
+        <iframe
+          src="https://player.twitch.tv/?<%= @event.stream_id %>"
+          height="300"
+          width="400"
+          frameborder="<frameborder>"
+          scrolling="<scrolling>"
+          allowfullscreen="<allowfullscreen>">
+        </iframe>
+      </div>
     <% end %>
     
     <% if @event.result_sets.length > 0 %>
@@ -46,7 +48,7 @@
             <tbody>
               <% result_set.results.order("position").each do |result| %>
                 <tr>
-                  <td><%= result.user.name %></td>
+                  <td><% if result.user.profile_picture.attached? %><%= image_tag url_for(result.user.profile_picture), height: 40, width: 40, style: "border-radius: 50%; margin-right: 4px;" %><% end %> <%= result.user.name %></td>
                   <td><%= result.position %></td>
                   <td><%= result.result %></td>
                 </tr>
@@ -64,8 +66,11 @@
       </div>
       
       <div class="card-body">
+        <% if !@event.event_series.nil? %>
+          <p><strong>Event Series: </strong><%= link_to @event.event_series.name, event_series_path(@event.event_series) %></p>
+        <% end %>
         <% if @event.location && @event.location != "" %>
-          <p><strong>Location:</strong> <%= link_to @event.location, "https://www.google.com/maps/search/#{@event.location}", target: "_blank" %></p>
+          <p><strong>Location: </strong><%= link_to @event.location, "https://www.google.com/maps/search/#{@event.location}", target: "_blank" %></p>
         <% end %>
         <p><strong>Start: </strong><%= @event.start.strftime("%d/%m/%Y - %H:%M") %></p>
         <p><strong>End: </strong><%= @event.finish.strftime("%d/%m/%Y - %H:%M") %></p>
@@ -84,12 +89,15 @@
       <div class="card-body">
         <% @event.registrations.each do |registration| %>
           <% if registration.user.profile_picture.attached? %>
-            <center class="mb-1">
-              <%= image_tag url_for(registration.user.profile_picture), class: "img-thumbnail w-50" %>
+            <center class="mb-1" style="display: inline-block">
+              <%= image_tag url_for(registration.user.profile_picture), class: "img-thumbnail", height: 60, width: 60, style: "border-radius: 50%; margin-right: 5px;" %>
             </center>
           <% elsif registration.user.profile_picture_url %>
+            <center class="mb-1" style="display: inline-block">
+              <%= image_tag registration.user.profile_picture_url, class: "img-thumbnail", height: 60, width: 60, style: "border-radius: 50%; margin-right: 5px" %>
+            </center>
           <% end %>
-          <strong><%= registration.user.name %></strong> <% if registration.channel %>on <strong><%= registration.channel.band.name %> <%= registration.channel.name %></strong><% end %>
+          <p style="display: inline-block"><strong><%= registration.user.name %></strong> <% if registration.channel %>on <strong><%= registration.channel.band.name %> <%= registration.channel.name %></strong><% end %></p>
         <hr>
         <% end %>
       </div>

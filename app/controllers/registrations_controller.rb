@@ -33,7 +33,7 @@ class RegistrationsController < ApplicationController
       @registration.channel = Channel.find(registration_params[:channel_id])
     end
     
-    if can? :update, @registration
+    if can? :create, @registration
       if @registration.update(registration_params)
         if @registration.event && @registration.channel
           @registration.clashing.each do |clashing_registration|
@@ -41,7 +41,7 @@ class RegistrationsController < ApplicationController
           end
         end
         RegistrationsMailer.registration(@registration).deliver_now
-        redirect_to event_path(registration_params[:event_id]), notice: "Congratulations! You're registered for this event."
+        redirect_back fallback_url: event_path(registration_params[:event_id]), notice: "Congratulations! You're registered for this event."
       else
         render :new
       end
@@ -52,7 +52,7 @@ class RegistrationsController < ApplicationController
   
   def edit
     @registration = Registration.find(params[:id])
-    if @registration.user != current_user && current_user.admin?
+    if @registration.user != current_user && !current_user.admin?
       flash[:error] = "That's not your registration!"
       redirect_to root_path and return
     end
@@ -62,7 +62,7 @@ class RegistrationsController < ApplicationController
     @registration = Registration.find(params[:id])
     if can? :update, @registration    
       if @registration.update(registration_params)
-        redirect_to root_path, notice: "Registration updated."
+        redirect_back fallback_location: root_path, notice: "Registration updated."
       else
         render :edit
       end

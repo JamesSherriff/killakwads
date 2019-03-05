@@ -1,0 +1,17 @@
+<%= form_for @event_series do |f| %>
+  <%= f.label :name %>
+  <%= f.text_field :name, class: "form-control" %>
+  <br>
+  <%= f.label :image %>
+  <div class="custom-file mb-2">
+    <%= f.file_field :image, class: "" %>
+    <label class="custom-file-label" for="event_image">Choose image</label>
+  </div>
+  <% if @event_series.image.attached? %>
+    <%= image_tag url_for(@event_series.image), width: 400, class: "img-thumbnail" %><br>
+    <%= link_to "Remove image", event_series_delete_image_path(@event_series), method: :delete %>
+  <% end %>
+  <br><br>
+  <%= f.submit "Save", class: "btn btn-primary" %>
+  <%= link_to "Cancel", :back, class: "btn btn-outline-primary" %>
+<% end %>

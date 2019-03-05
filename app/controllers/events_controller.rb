@@ -5,6 +5,10 @@ class EventsController < ApplicationController
   
   def index
     @events = Event.where("finish > ?", Time.now)
+    respond_to do |format|
+      format.html
+      format.json { render json: @events.to_json }
+    end
   end
   
   def previous
@@ -130,6 +134,6 @@ class EventsController < ApplicationController
   
   private
   def event_params
-    params.require(:event).permit(:name, :description, :location, :start, :finish, :registration_start, :registration_end, :image, :pilot_limit, :stream_id, :pilot_brief, :pilot_brief_downloadable, :channel_allocation_method, channel_ids: [])
+    params.require(:event).permit(:name, :description, :location, :start, :finish, :registration_start, :registration_end, :image, :pilot_limit, :stream_id, :pilot_brief, :pilot_brief_downloadable, :channel_allocation_method, :event_series_id, channel_ids: [])
   end
 end

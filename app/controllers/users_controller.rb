@@ -12,6 +12,7 @@ class UsersController < ApplicationController
   
   def new
     @user = User.new
+    @url = create_user_path
     if cannot? :create, @user
       redirect_to root_path, notice: "You need to be an admin to do that."
     end
@@ -20,9 +21,10 @@ class UsersController < ApplicationController
   def create
     @user = User.new
     if can? :create, @user
-      if @user.update(User_params)
-        redirect_to user_path(@user), notice: "Successfully created User."
+      if @user.update(user_params)
+        redirect_back fallback_url: user_path(@user), notice: "Successfully created User."
       else
+        @url = create_user_path
         render :new
       end
     else
@@ -32,6 +34,7 @@ class UsersController < ApplicationController
   
   def edit
     @user = User.find(params[:id])
+    @url = user_path(params[:id])
     if cannot? :update, @user
       redirect_to root_path, notice: "You need to be an admin to do that."
     end
@@ -43,6 +46,7 @@ class UsersController < ApplicationController
       if @user.update(user_params)
         redirect_to user_path(@user), notice: "Succesfully updated User."
       else
+        @url = user_path(params[:id])
         render :edit
       end
     else
@@ -53,7 +57,7 @@ class UsersController < ApplicationController
   def destroy
     @user = User.find(params[:id])
     if can? :destroy, @user
-      if @user.destroy then
+      if @user.destroy
         redirect_to users_path, notice: "User deleted."
       else
         redirect_to users_path, notice: "Unable to delete User."
@@ -75,6 +79,6 @@ class UsersController < ApplicationController
   
   private
   def user_params
-    params.require(:user).permit(:name, :display_name, :description, :email, :password, :profile_picture)
+    params.require(:user).permit(:name, :role, :display_name, :description, :email, :password, :profile_picture)
   end
 end
