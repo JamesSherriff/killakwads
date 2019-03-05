@@ -1,6 +1,10 @@
 <div id="events" class="mb-5">
   <% if @events.empty? %>
-    <center><h2>Couldn't find any events!</h2></center>
+    <% if params[:action] == "previous" %>
+      <center><h2>Couldn't find any previous events!</h2></center>
+    <% else %>
+        <center><h2>Couldn't find any upcoming events!</h2></center>
+    <% end %>
   <% else %>
     <div class="row">
       <% @events.each do |event| %>

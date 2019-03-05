@@ -73,8 +73,9 @@
   <br>
   <% if @event.pilot_brief.attached? %>
     <p><strong>Current file: </strong><%= @event.pilot_brief.blob.filename %></p>
+    <%= link_to "Remove file", event_delete_pilot_brief_path(@event), method: :delete %>
   <% end %>
-  <br>
+  <br><br>
   <%= f.label :pilot_brief_downloadable %>
   <%= f.select :pilot_brief_downloadable, options_for_select([["Yes", true], ["No", false]]), {}, {class: "form-control"} %>
   <small class="form-text">Should pilots be able to download the pilot brief from the events page? It will also be emailed to them.</small>

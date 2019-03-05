@@ -85,6 +85,16 @@ class EventsController < ApplicationController
       redirect_to root_path, notice: "You need to be an admin to do that."
     end
   end
+  
+  def delete_pilot_brief
+    @event = Event.find(params[:id])
+    if can? :update, @event
+      @event.pilot_brief.purge
+      render :edit
+    else
+      redirect_to root_path, notice: "You need to be an admin to do that."
+    end
+  end
     
   def check_channel
     @event = Event.find(params[:event_id])
@@ -109,6 +119,13 @@ class EventsController < ApplicationController
     respond_to do |format|
       format.csv { send_data registrations_csv, filename: "#{@event.name} - registrations.csv"}
     end
+  end
+  
+  def clone
+    @event_to_clone = Event.find(params[:id])
+    @event = @event_to_clone.clone
+    @event.name = "Clone - #{@event.name}"
+    render :edit
   end
   
   private
